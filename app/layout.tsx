@@ -10,7 +10,9 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "IFL Jovem SP",
   description: "Instituto de Formação de Líderes - Jovem São Paulo",
-  generator: "v0.app",
+  icons: {
+    icon: "/logo-ifl-jovem-sp-square.png",
+  }
 }
 
 export default function RootLayout({
