@@ -86,13 +86,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <div className="grid gap-6 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
           {event.image_url && (
-            <Card className="bg-white/5 border-[#FFD700]/20 overflow-hidden">
-              <div className="relative h-64 w-full">
+            <Card className="bg-white/5 border-[#FFD700]/20 overflow-hidden rounded-2xl">
+              <div className="relative aspect-square w-full max-w-md mx-auto">
                 <Image
                   src={event.image_url}
                   alt={event.title}
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-2xl"
                 />
               </div>
             </Card>

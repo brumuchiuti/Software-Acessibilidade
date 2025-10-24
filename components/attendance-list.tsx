@@ -66,7 +66,11 @@ export function AttendanceList({ attendees, eventId, pointsValue }: AttendanceLi
 
             <div>
               <p className="font-semibold text-white">{attendee.profiles?.full_name}</p>
-              <RoleBadge role={attendee.profiles?.role} />
+              <RoleBadge 
+                boardRole={attendee.profiles?.board_role}
+                developmentLevel={attendee.profiles?.development_level}
+                instituteAreas={attendee.profiles?.member_institute_areas}
+              />
             </div>
           </div>
 

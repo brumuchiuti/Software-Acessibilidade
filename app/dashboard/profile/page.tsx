@@ -15,7 +15,16 @@ export default async function ProfilePage() {
 
   if (!user) return null
 
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select(`
+      *,
+      member_institute_areas (
+        area
+      )
+    `)
+    .eq("id", user.id)
+    .single()
 
   const { data: attendedEvents } = await supabase
     .from("event_attendance")
@@ -68,7 +77,11 @@ export default async function ProfilePage() {
               </Avatar>
               <h2 className="text-2xl font-bold text-white text-center">{profile?.full_name}</h2>
               <div className="mt-2">
-                <RoleBadge role={profile?.role || ""} directorTitle={profile?.director_title} />
+                <RoleBadge 
+                  boardRole={profile?.board_role}
+                  developmentLevel={profile?.development_level}
+                  instituteAreas={profile?.member_institute_areas}
+                />
               </div>
             </div>
 

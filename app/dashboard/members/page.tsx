@@ -7,26 +7,30 @@ import { Users, Linkedin, Instagram } from "lucide-react"
 export default async function MembersPage() {
   const supabase = await createClient()
 
-  const { data: allMembers } = await supabase.from("profiles").select("*").order("full_name", { ascending: true })
+  const { data: allMembers } = await supabase
+    .from("profiles")
+    .select(`
+      *,
+      member_institute_areas (
+        area
+      )
+    `)
+    .order("full_name", { ascending: true })
 
   const membersByRole = {
-    presidente: allMembers?.filter((m) => m.role === "presidente") || [],
-    vice_presidente: allMembers?.filter((m) => m.role === "vice_presidente") || [],
-    diretor: allMembers?.filter((m) => m.role === "diretor") || [],
-    associado_senior: allMembers?.filter((m) => m.role === "associado_senior") || [],
-    associado_iii: allMembers?.filter((m) => m.role === "associado_iii") || [],
-    associado_ii: allMembers?.filter((m) => m.role === "associado_ii") || [],
-    associado_i: allMembers?.filter((m) => m.role === "associado_i") || [],
+    board_members: allMembers?.filter((m) => m.board_role !== null) || [],
+    qualify: allMembers?.filter((m) => m.development_level === "qualify") || [],
+    associado_i: allMembers?.filter((m) => m.development_level === "associado_i") || [],
+    associado_ii: allMembers?.filter((m) => m.development_level === "associado_ii") || [],
+    associado_senior: allMembers?.filter((m) => m.development_level === "associado_senior") || [],
   }
 
   const roleLabels: Record<string, string> = {
-    presidente: "Presidente",
-    vice_presidente: "Vice-Presidente",
-    diretor: "Diretores",
-    associado_senior: "Associados Sênior",
-    associado_iii: "Associados III",
-    associado_ii: "Associados II",
+    board_members: "Diretoria",
+    qualify: "Qualify",
     associado_i: "Associados I",
+    associado_ii: "Associados II",
+    associado_senior: "Associados Sênior",
   }
 
   return (
@@ -80,7 +84,11 @@ export default async function MembersPage() {
 
                         <div className="space-y-2">
                           <h3 className="text-lg font-bold text-white">{member.full_name}</h3>
-                          <RoleBadge role={member.role} directorTitle={member.director_title} />
+                          <RoleBadge 
+                            boardRole={member.board_role}
+                            developmentLevel={member.development_level}
+                            instituteAreas={member.member_institute_areas}
+                          />
                         </div>
 
                         {(member.bio || member.description) && (

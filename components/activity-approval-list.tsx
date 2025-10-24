@@ -3,7 +3,9 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, XCircle } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { CheckCircle, XCircle, Edit3 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
 interface ActivityApprovalListProps {
@@ -13,6 +15,8 @@ interface ActivityApprovalListProps {
 export default function ActivityApprovalList({ participations }: ActivityApprovalListProps) {
   const router = useRouter()
   const [loading, setLoading] = useState<string | null>(null)
+  const [editingPoints, setEditingPoints] = useState<string | null>(null)
+  const [pointsValues, setPointsValues] = useState<Record<string, number>>({})
 
   const handleApprove = async (participationId: string, pointsValue: number) => {
     setLoading(participationId)
@@ -61,6 +65,30 @@ export default function ActivityApprovalList({ participations }: ActivityApprova
     }
   }
 
+  const handleEditPoints = (participationId: string, currentPoints: number) => {
+    setEditingPoints(participationId)
+    setPointsValues(prev => ({
+      ...prev,
+      [participationId]: currentPoints
+    }))
+  }
+
+  const handleSavePoints = (participationId: string) => {
+    setEditingPoints(null)
+  }
+
+  const handlePointsChange = (participationId: string, value: string) => {
+    const numValue = parseInt(value) || 0
+    setPointsValues(prev => ({
+      ...prev,
+      [participationId]: numValue
+    }))
+  }
+
+  const getPointsValue = (participation: any) => {
+    return pointsValues[participation.id] ?? participation.activities.points_value
+  }
+
   if (!participations || participations.length === 0) {
     return (
       <div className="text-center py-8">
@@ -87,9 +115,39 @@ export default function ActivityApprovalList({ participations }: ActivityApprova
                 <span className="text-white/60">
                   Tipo: <span className="text-white">{participation.activities.activity_type}</span>
                 </span>
-                <span className="text-white/60">
-                  Pontos: <span className="text-[#FFD700]">{participation.activities.points_value}</span>
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-white/60">Pontos:</span>
+                  {editingPoints === participation.id ? (
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="number"
+                        min="0"
+                        value={getPointsValue(participation)}
+                        onChange={(e) => handlePointsChange(participation.id, e.target.value)}
+                        className="w-20 h-6 text-xs bg-white/5 border-white/10 text-white"
+                      />
+                      <Button
+                        size="sm"
+                        onClick={() => handleSavePoints(participation.id)}
+                        className="h-6 px-2 bg-[#FFD700] text-black hover:bg-[#FFD700]/90"
+                      >
+                        ✓
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[#FFD700]">{getPointsValue(participation)}</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleEditPoints(participation.id, getPointsValue(participation))}
+                        className="h-6 w-6 p-0 text-white/60 hover:text-[#FFD700] hover:bg-white/5"
+                      >
+                        <Edit3 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
               {participation.notes && (
                 <div className="p-3 rounded bg-white/5 border border-white/10">
@@ -100,8 +158,8 @@ export default function ActivityApprovalList({ participations }: ActivityApprova
             <div className="flex gap-2">
               <Button
                 size="sm"
-                onClick={() => handleApprove(participation.id, participation.activities.points_value)}
-                disabled={loading === participation.id}
+                onClick={() => handleApprove(participation.id, getPointsValue(participation))}
+                disabled={loading === participation.id || editingPoints === participation.id}
                 className="bg-green-600 hover:bg-green-700 text-white"
               >
                 <CheckCircle className="h-4 w-4 mr-1" />

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
 import ActivityApprovalList from "@/components/activity-approval-list"
+import ActivityActions from "@/components/activity-actions"
 
 export default async function AdminActivitiesPage() {
   const supabase = await createClient()
@@ -17,7 +18,7 @@ export default async function AdminActivitiesPage() {
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
-  const isAdmin = profile && ["presidente", "vice_presidente", "diretor"].includes(profile.role)
+  const isAdmin = profile && profile.board_role !== null
 
   if (!isAdmin) redirect("/dashboard")
 
@@ -159,6 +160,7 @@ export default async function AdminActivitiesPage() {
                         </span>
                       </div>
                     </div>
+                    <ActivityActions activity={activity} />
                   </div>
                 </div>
               ))}

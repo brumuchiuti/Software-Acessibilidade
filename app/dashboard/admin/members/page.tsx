@@ -1,8 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { RoleBadge } from "@/components/role-badge"
+import { Edit } from "lucide-react"
+import Link from "next/link"
 
 export default async function AdminMembersPage() {
   const supabase = await createClient()
@@ -15,11 +18,19 @@ export default async function AdminMembersPage() {
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
-  const isAdmin = profile && ["presidente", "vice_presidente", "diretor"].includes(profile.role)
+  const isAdmin = profile && profile.board_role !== null
 
   if (!isAdmin) redirect("/dashboard")
 
-  const { data: allMembers } = await supabase.from("profiles").select("*").order("full_name", { ascending: true })
+  const { data: allMembers } = await supabase
+    .from("profiles")
+    .select(`
+      *,
+      member_institute_areas (
+        area
+      )
+    `)
+    .order("full_name", { ascending: true })
 
   return (
     <div className="space-y-8">
@@ -46,7 +57,7 @@ export default async function AdminMembersPage() {
                     <AvatarFallback className="bg-[#FFD700] text-black">
                       {member.full_name
                         .split(" ")
-                        .map((n) => n[0])
+                        .map((n: string) => n[0])
                         .join("")
                         .toUpperCase()
                         .slice(0, 2)}
@@ -60,11 +71,26 @@ export default async function AdminMembersPage() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <RoleBadge role={member.role} directorTitle={member.director_title} />
+                  <RoleBadge 
+                    boardRole={member.board_role}
+                    developmentLevel={member.development_level}
+                    instituteAreas={member.member_institute_areas}
+                  />
                   <div className="text-right">
                     <p className="text-lg font-bold text-[#FFD700]">{member.total_points}</p>
                     <p className="text-xs text-white/60">pontos</p>
                   </div>
+                  <Button
+                    asChild
+                    size="sm"
+                    variant="outline"
+                    className="border-[#FFD700]/40 text-blue-500 bg-transparent"
+                  >
+                    <Link href={`/dashboard/admin/members/${member.id}/edit`}>
+                      <Edit className="mr-1 h-3 w-3" />
+                      Editar
+                    </Link>
+                  </Button>
                 </div>
               </div>
             ))}

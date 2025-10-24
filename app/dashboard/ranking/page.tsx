@@ -15,9 +15,26 @@ export default async function RankingPage() {
 
   if (!user) return null
 
-  const { data: currentUser } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+  const { data: currentUser } = await supabase
+    .from("profiles")
+    .select(`
+      *,
+      member_institute_areas (
+        area
+      )
+    `)
+    .eq("id", user.id)
+    .single()
 
-  const { data: allMembers } = await supabase.from("profiles").select("*").order("total_points", { ascending: false })
+  const { data: allMembers } = await supabase
+    .from("profiles")
+    .select(`
+      *,
+      member_institute_areas (
+        area
+      )
+    `)
+    .order("total_points", { ascending: false })
 
   const userRank = allMembers?.findIndex((member) => member.id === user.id) ?? -1
 
@@ -134,7 +151,11 @@ export default async function RankingPage() {
 
                     <div className="space-y-2">
                       <h3 className="text-xl font-bold">{member.full_name}</h3>
-                      <RoleBadge role={member.role} directorTitle={member.director_title} />
+                      <RoleBadge 
+                        boardRole={member.board_role}
+                        developmentLevel={member.development_level}
+                        instituteAreas={member.member_institute_areas}
+                      />
                     </div>
 
                     <div className="w-full pt-4 border-t border-white/20">
@@ -183,7 +204,11 @@ export default async function RankingPage() {
                             {member.full_name}
                             {isCurrentUser && <span className="ml-2 text-[#FFD700] text-sm">(Você)</span>}
                           </p>
-                          <RoleBadge role={member.role} directorTitle={member.director_title} />
+                          <RoleBadge 
+                        boardRole={member.board_role}
+                        developmentLevel={member.development_level}
+                        instituteAreas={member.member_institute_areas}
+                      />
                         </div>
                       </div>
 

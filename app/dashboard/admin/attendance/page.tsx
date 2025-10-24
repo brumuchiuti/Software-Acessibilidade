@@ -20,7 +20,7 @@ export default async function AttendancePage({
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
-  const isAdmin = profile && ["presidente", "vice_presidente", "diretor"].includes(profile.role)
+  const isAdmin = profile && profile.board_role !== null
 
   if (!isAdmin) redirect("/dashboard")
 
@@ -37,7 +37,21 @@ export default async function AttendancePage({
     : { data: null }
 
   const { data: attendees } = selectedEventId
-    ? await supabase.from("event_attendance").select("*, profiles(id, full_name, role)").eq("event_id", selectedEventId)
+    ? await supabase
+        .from("event_attendance")
+        .select(`
+          *, 
+          profiles(
+            id, 
+            full_name, 
+            board_role,
+            development_level,
+            member_institute_areas (
+              area
+            )
+          )
+        `)
+        .eq("event_id", selectedEventId)
     : { data: null }
 
   return (

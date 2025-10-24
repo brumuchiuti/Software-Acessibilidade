@@ -1,30 +1,76 @@
 import { Badge } from "@/components/ui/badge"
 
 interface RoleBadgeProps {
-  role: string
-  directorTitle?: string | null
+  boardRole?: string | null
+  developmentLevel?: string
+  instituteAreas?: Array<{ area: string }>
 }
 
-export function RoleBadge({ role, directorTitle }: RoleBadgeProps) {
-  const roleLabels: Record<string, string> = {
+export function RoleBadge({ boardRole, developmentLevel, instituteAreas }: RoleBadgeProps) {
+  const boardRoleLabels: Record<string, string> = {
     presidente: "Presidente",
     vice_presidente: "Vice-Presidente",
-    diretor: directorTitle || "Diretor",
+    diretor_eventos: "Diretor de Eventos",
+    diretor_comunicacao: "Diretor de Comunicação",
+    diretor_formacao: "Diretor de Formação",
+    diretor_institucional: "Diretor Institucional",
+    diretor_financeiro: "Diretor Financeiro",
+    diretor_forum: "Diretor de Fórum",
+    conselheiro: "Conselheiro",
+  }
+
+  const developmentLevelLabels: Record<string, string> = {
+    qualify: "Qualify",
     associado_i: "Associado I",
     associado_ii: "Associado II",
-    associado_iii: "Associado III",
     associado_senior: "Associado Sênior",
   }
 
-  const roleColors: Record<string, string> = {
-    presidente: "bg-[#FFD700] text-black hover:bg-[#FFD700]/90",
-    vice_presidente: "bg-[#FFD700]/80 text-black hover:bg-[#FFD700]/70",
-    diretor: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
-    associado_i: "bg-white/10 text-white hover:bg-white/20",
-    associado_ii: "bg-white/10 text-white hover:bg-white/20",
-    associado_iii: "bg-white/10 text-white hover:bg-white/20",
-    associado_senior: "bg-white/20 text-white hover:bg-white/30",
+  const instituteAreaLabels: Record<string, string> = {
+    diretoria_financeira: "Diretoria Financeira",
+    diretoria_comunicacao: "Diretoria de Comunicação",
+    diretoria_forum: "Diretoria de Fórum",
+    diretoria_formacao: "Diretoria de Formação",
+    diretoria_institucional: "Diretoria Institucional",
+    diretoria_eventos: "Diretoria de Eventos",
   }
 
-  return <Badge className={roleColors[role] || "bg-secondary"}>{roleLabels[role] || role}</Badge>
+  const boardRoleColors: Record<string, string> = {
+    presidente: "bg-[#FFD700] text-black hover:bg-[#FFD700]/90",
+    vice_presidente: "bg-[#FFD700]/80 text-black hover:bg-[#FFD700]/70",
+    diretor_eventos: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
+    diretor_comunicacao: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
+    diretor_formacao: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
+    diretor_institucional: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
+    diretor_financeiro: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
+    diretor_forum: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
+    conselheiro: "bg-purple-600 text-white hover:bg-purple-700",
+  }
+
+  const developmentLevelColors: Record<string, string> = {
+    qualify: "bg-gray-500 text-white hover:bg-gray-600",
+    associado_i: "bg-white/10 text-white hover:bg-white/20",
+    associado_ii: "bg-white/20 text-white hover:bg-white/30",
+    associado_senior: "bg-white/30 text-white hover:bg-white/40",
+  }
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {boardRole && (
+        <Badge className={boardRoleColors[boardRole] || "bg-secondary"}>
+          {boardRoleLabels[boardRole] || boardRole}
+        </Badge>
+      )}
+      {developmentLevel && (
+        <Badge className={developmentLevelColors[developmentLevel] || "bg-secondary"}>
+          {developmentLevelLabels[developmentLevel] || developmentLevel}
+        </Badge>
+      )}
+      {instituteAreas && instituteAreas.length > 0 && (
+        <Badge className="bg-blue-600 text-white hover:bg-blue-700">
+          {instituteAreas.map(area => instituteAreaLabels[area.area] || area.area).join(", ")}
+        </Badge>
+      )}
+    </div>
+  )
 }

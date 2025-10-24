@@ -16,7 +16,7 @@ export default async function AdminPage() {
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
-  const isAdmin = profile && ["presidente", "vice_presidente", "diretor"].includes(profile.role)
+  const isAdmin = profile && profile.board_role !== null
 
   if (!isAdmin) {
     redirect("/dashboard")

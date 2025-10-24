@@ -12,7 +12,16 @@ export default async function DashboardPage() {
 
   if (!user) return null
 
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select(`
+      *,
+      member_institute_areas (
+        area
+      )
+    `)
+    .eq("id", user.id)
+    .single()
 
   const { data: upcomingEvents } = await supabase
     .from("events")
@@ -30,7 +39,15 @@ export default async function DashboardPage() {
 
   const { data: topMembers } = await supabase
     .from("profiles")
-    .select("full_name, total_points, role")
+    .select(`
+      full_name, 
+      total_points, 
+      board_role,
+      development_level,
+      member_institute_areas (
+        area
+      )
+    `)
     .order("total_points", { ascending: false })
     .limit(5)
 
@@ -47,7 +64,11 @@ export default async function DashboardPage() {
       <div>
         <h1 className="text-4xl font-bold text-white mb-2">Bem-vindo, {profile?.full_name.match(/\S+/)[0]}!</h1>
         <div className="flex items-center gap-2">
-          <RoleBadge role={profile?.role || ""} directorTitle={profile?.director_title} />
+          <RoleBadge 
+            boardRole={profile?.board_role}
+            developmentLevel={profile?.development_level}
+            instituteAreas={profile?.member_institute_areas}
+          />
         </div>
       </div>
 
@@ -150,7 +171,11 @@ export default async function DashboardPage() {
                       <span className="text-2xl font-bold text-[#FFD700]">#{index + 1}</span>
                       <div>
                         <p className="font-medium text-white">{member.full_name}</p>
-                        <RoleBadge role={member.role} />
+                        <RoleBadge 
+                          boardRole={member.board_role}
+                          developmentLevel={member.development_level}
+                          instituteAreas={member.member_institute_areas}
+                        />
                       </div>
                     </div>
                     <span className="text-sm font-medium text-[#FFD700]">{member.total_points} pts</span>
