@@ -1,0 +1,158 @@
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Plus, CheckCircle, Clock } from "lucide-react"
+import Link from "next/link"
+
+export default async function ActivitiesPage() {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) redirect("/auth/login")
+
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+
+  if (!profile) redirect("/auth/login")
+
+  // Get user's activity participations with activity details
+  const { data: participations } = await supabase
+    .from("activity_participation")
+    .select(
+      `
+      *,
+      activities (
+        id,
+        title,
+        description,
+        activity_type,
+        points_value
+      )
+    `,
+    )
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+
+  const pendingCount = participations?.filter((p) => !p.completed).length || 0
+  const approvedCount = participations?.filter((p) => p.completed).length || 0
+  const totalPoints = participations?.reduce((sum, p) => sum + (p.points_earned || 0), 0) || 0
+
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-white mb-2">Minhas Atividades</h1>
+          <p className="text-white/60">Submeta e acompanhe suas atividades de engajamento</p>
+        </div>
+        <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+          <Link href="/dashboard/ranking/activities/submit">
+            <Plus className="mr-2 h-4 w-4" />
+            Submeter Atividade
+          </Link>
+        </Button>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="bg-white/5 border-[#FFD700]/20">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Pendentes</CardTitle>
+            <Clock className="h-4 w-4 text-yellow-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-white">{pendingCount}</div>
+            <p className="text-xs text-white/60 mt-1">Aguardando aprovação</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white/5 border-[#FFD700]/20">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Aprovadas</CardTitle>
+            <CheckCircle className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-[#FFD700]">{approvedCount}</div>
+            <p className="text-xs text-white/60 mt-1">Atividades concluídas</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white/5 border-[#FFD700]/20">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-white">Pontos Ganhos</CardTitle>
+            <CheckCircle className="h-4 w-4 text-[#FFD700]" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-white">{totalPoints}</div>
+            <p className="text-xs text-white/60 mt-1">De atividades</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="bg-white/5 border-[#FFD700]/20">
+        <CardHeader>
+          <CardTitle className="text-white">Histórico de Atividades</CardTitle>
+          <CardDescription className="text-white/60">Todas as suas atividades submetidas</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!participations || participations.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-white/60 mb-4">Você ainda não submeteu nenhuma atividade</p>
+              <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+                <Link href="/dashboard/ranking/activities/submit">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Submeter Primeira Atividade
+                </Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {participations.map((participation: any) => (
+                <div
+                  key={participation.id}
+                  className="flex items-start justify-between p-4 rounded-lg bg-white/5 border border-white/10"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-lg font-semibold text-white">{participation.activities.title}</h3>
+                      {participation.completed ? (
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                      ) : (
+                        <Clock className="h-5 w-5 text-yellow-500" />
+                      )}
+                    </div>
+                    <p className="text-white/60 text-sm mb-2">{participation.activities.description}</p>
+                    <div className="flex items-center gap-4 text-sm">
+                      <span className="text-white/60">
+                        Tipo: <span className="text-white">{participation.activities.activity_type}</span>
+                      </span>
+                      <span className="text-white/60">
+                        Pontos: <span className="text-[#FFD700]">{participation.activities.points_value}</span>
+                      </span>
+                      <span className="text-white/60">
+                        Status:{" "}
+                        <span className={participation.completed ? "text-green-500" : "text-yellow-500"}>
+                          {participation.completed ? "Aprovada" : "Pendente"}
+                        </span>
+                      </span>
+                    </div>
+                    {participation.notes && (
+                      <p className="text-white/60 text-sm mt-2 italic">Nota: {participation.notes}</p>
+                    )}
+                  </div>
+                  {participation.completed && (
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#FFD700]">+{participation.points_earned}</div>
+                      <div className="text-xs text-white/60">pontos</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

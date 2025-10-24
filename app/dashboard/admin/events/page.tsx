@@ -1,0 +1,120 @@
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Calendar, MapPin, Plus } from "lucide-react"
+import Link from "next/link"
+
+export default async function AdminEventsPage() {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) redirect("/auth/login")
+
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+
+  const isAdmin = profile && ["presidente", "vice_presidente", "diretor"].includes(profile.role)
+
+  if (!isAdmin) redirect("/dashboard")
+
+  const { data: allEvents } = await supabase.from("events").select("*").order("event_date", { ascending: false })
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "scheduled":
+        return <Badge className="bg-blue-600 hover:bg-blue-700">Agendado</Badge>
+      case "ongoing":
+        return <Badge className="bg-green-600 hover:bg-green-700">Em Andamento</Badge>
+      case "completed":
+        return <Badge className="bg-gray-600 hover:bg-gray-700">Concluído</Badge>
+      case "cancelled":
+        return <Badge className="bg-red-600 hover:bg-red-700">Cancelado</Badge>
+      default:
+        return null
+    }
+  }
+
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-white mb-2">Gerenciar Eventos</h1>
+          <p className="text-white/60">Criar e gerenciar eventos da organização</p>
+        </div>
+        <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+          <Link href="/dashboard/admin/events/create">
+            <Plus className="mr-2 h-4 w-4" />
+            Criar Evento
+          </Link>
+        </Button>
+      </div>
+
+      <div className="space-y-4">
+        {allEvents && allEvents.length > 0 ? (
+          allEvents.map((event) => (
+            <Card key={event.id} className="bg-white/5 border-[#FFD700]/20">
+              <CardContent className="py-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold text-white">{event.title}</h3>
+                      {getStatusBadge(event.status)}
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-white/60">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {new Date(event.event_date).toLocaleDateString("pt-BR", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                      {event.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {event.location}
+                        </span>
+                      )}
+                      <span className="text-[#FFD700]">{event.points_value} pontos</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                      className="border-[#FFD700]/40 text-[#FFD700] bg-transparent"
+                    >
+                      <Link href={`/dashboard/admin/events/${event.id}/edit`}>Editar</Link>
+                    </Button>
+                    <Button asChild size="sm" className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+                      <Link href={`/dashboard/admin/attendance?event=${event.id}`}>Presenças</Link>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <Card className="bg-white/5 border-[#FFD700]/20">
+            <CardContent className="py-12 text-center">
+              <p className="text-white/60 mb-4">Nenhum evento criado ainda.</p>
+              <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+                <Link href="/dashboard/admin/events/create">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Criar Primeiro Evento
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </div>
+  )
+}
