@@ -53,7 +53,7 @@ export function AttendanceList({ attendees, eventId, pointsValue }: AttendanceLi
         >
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12">
-              <AvatarImage src="/placeholder.svg" alt={attendee.profiles?.full_name} />
+              <AvatarImage src="/placeholder.svg" alt={attendee.profiles?.full_name} className="object-cover" />
               <AvatarFallback className="bg-[#FFD700] text-black">
                 {attendee.profiles?.full_name
                   .split(" ")

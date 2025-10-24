@@ -42,7 +42,7 @@ export default async function AdminMembersPage() {
               >
                 <div className="flex items-center gap-4">
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src={member.avatar_url || ""} alt={member.full_name} />
+                    <AvatarImage src={member.avatar_url || ""} alt={member.full_name} className="object-cover" />
                     <AvatarFallback className="bg-[#FFD700] text-black">
                       {member.full_name
                         .split(" ")

@@ -112,7 +112,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
         <Label className="text-white">Foto de Perfil</Label>
         <div className="flex items-center gap-4">
           <Avatar className="h-20 w-20">
-            <AvatarImage src={imagePreview || ""} alt={profile.full_name} />
+            <AvatarImage src={imagePreview || ""} alt={profile.full_name} className="object-cover" />
             <AvatarFallback className="bg-[#FFD700] text-black text-xl">
               {profile.full_name
                 .split(" ")

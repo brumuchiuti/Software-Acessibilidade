@@ -45,7 +45,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Bem-vindo, {profile?.full_name}!</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Bem-vindo, {profile?.full_name.match(/\S+/)[0]}!</h1>
         <div className="flex items-center gap-2">
           <RoleBadge role={profile?.role || ""} directorTitle={profile?.director_title} />
         </div>

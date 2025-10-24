@@ -119,11 +119,11 @@ export default async function RankingPage() {
                   <div className="flex flex-col items-center text-center space-y-4">
                     <div className="relative">
                       <Avatar className="h-24 w-24 border-4 border-white/20">
-                        <AvatarImage src={member.avatar_url || ""} alt={member.full_name} />
+                        <AvatarImage src={member.avatar_url || ""} alt={member.full_name} className="object-cover" />
                         <AvatarFallback className="bg-white/20 text-2xl">
                           {member.full_name
                             .split(" ")
-                            .map((n) => n[0])
+                            .map((n: any) => n[0])
                             .join("")
                             .toUpperCase()
                             .slice(0, 2)}
@@ -167,11 +167,11 @@ export default async function RankingPage() {
                         <span className="text-2xl font-bold text-white/60 w-12 text-center">#{actualRank}</span>
 
                         <Avatar className="h-12 w-12">
-                          <AvatarImage src={member.avatar_url || ""} alt={member.full_name} />
+                          <AvatarImage src={member.avatar_url || ""} alt={member.full_name} className="object-cover" />
                           <AvatarFallback className="bg-[#FFD700] text-black">
                             {member.full_name
                               .split(" ")
-                              .map((n) => n[0])
+                              .map((n: any) => n[0])
                               .join("")
                               .toUpperCase()
                               .slice(0, 2)}
