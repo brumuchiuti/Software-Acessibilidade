@@ -34,12 +34,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
   const { data: attendees } = await supabase
     .from("event_attendance")
-    .select("*, profiles(full_name, role)")
+    .select("*, profiles(full_name, role, avatar_url)")
     .eq("event_id", id)
 
   const { data: creator } = await supabase
     .from("profiles")
-    .select("full_name, role")
+    .select("full_name, role, avatar_url")
     .eq("id", event.created_by)
     .single()
 

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, MapPin, Plus, Share2 } from "lucide-react"
+import { Calendar, MapPin, Plus, Share2, Mail } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminEventsPage() {
@@ -82,6 +82,12 @@ export default async function AdminEventsPage() {
                         </span>
                       )}
                       <span className="text-[#FFD700]">{event.points_value} pontos</span>
+                      {event.google_calendar_event_id && (
+                        <span className="flex items-center gap-1 text-green-400">
+                          <Mail className="h-3 w-3" />
+                          Google Calendar
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

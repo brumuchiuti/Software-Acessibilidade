@@ -22,7 +22,7 @@ interface DashboardNavProps {
     email: string
     full_name: string
     role: string
-    avatar_url: string
+    avatar_url?: string | null
   }
 }
 

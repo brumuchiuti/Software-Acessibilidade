@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CalendarIntegration } from "@/components/calendar-integration"
+import { GoogleCalendarInvite } from "@/components/google-calendar-invite"
 import { CalendarService, CalendarEvent } from "@/lib/calendar"
 
 interface CreateEventFormProps {
@@ -23,6 +24,9 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [showCalendarIntegration, setShowCalendarIntegration] = useState(false)
   const [createdEvent, setCreatedEvent] = useState<CalendarEvent | null>(null)
+  const [calendarUrl, setCalendarUrl] = useState<string | null>(null)
+  const [organizerEmail, setOrganizerEmail] = useState<string | null>(null)
+  const [attendeeCount, setAttendeeCount] = useState<number>(0)
   const router = useRouter()
   const supabase = createClient()
 
@@ -86,7 +90,7 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
         }
       }
 
-      const { error } = await supabase.from("events").insert({
+      const eventData = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
         event_date: eventDate.toISOString(),
@@ -98,9 +102,48 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
           : null,
         image_url: imageUrl,
         created_by: userId,
-      })
+      }
+
+      const { data: newEvent, error } = await supabase.from("events").insert(eventData).select().single()
 
       if (error) throw error
+
+      // Automatically create Google Calendar event and invite all users
+      try {
+        const response = await fetch('/api/google-calendar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            eventId: newEvent.id,
+            eventData: eventData,
+          }),
+        })
+
+        if (response.ok) {
+          const result = await response.json()
+          console.log('Google Calendar URL generated successfully:', result)
+          
+          // Store the calendar URL for display
+          if (result.calendarUrl) {
+            setCalendarUrl(result.calendarUrl)
+            setOrganizerEmail(result.organizerEmail)
+            setAttendeeCount(result.invitedUsers)
+            
+            // Update the event with the calendar URL
+            await supabase
+              .from('events')
+              .update({ google_calendar_event_id: result.calendarUrl })
+              .eq('id', newEvent.id)
+          }
+        } else {
+          console.error('Failed to generate Google Calendar URL:', await response.text())
+        }
+      } catch (calendarError) {
+        console.error('Error generating Google Calendar URL:', calendarError)
+        // Don't fail the entire event creation if calendar fails
+      }
 
       // Show calendar integration after successful event creation
       const calendarEvent: CalendarEvent = {
@@ -133,10 +176,12 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
 
   return (
     <div className="space-y-6">
-      {showCalendarIntegration && createdEvent && (
-        <CalendarIntegration 
-          event={createdEvent} 
-          onClose={handleCalendarComplete}
+      {calendarUrl && (
+        <GoogleCalendarInvite 
+          eventId=""
+          calendarUrl={calendarUrl || undefined}
+          organizerEmail={organizerEmail || undefined}
+          attendeeCount={attendeeCount}
         />
       )}
       

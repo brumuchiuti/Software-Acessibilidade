@@ -22,6 +22,7 @@ interface Event {
   max_participants: number | null
   image_url: string | null
   created_by: string
+  google_calendar_event_id?: string | null
 }
 
 interface EditEventFormProps {
@@ -123,6 +124,33 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
         .eq("id", event.id)
 
       if (error) throw error
+
+      // Update Google Calendar event if it exists
+      if (event.google_calendar_event_id) {
+        try {
+          const response = await fetch('/api/google-calendar', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              eventId: event.id,
+              googleEventId: event.google_calendar_event_id,
+              eventData: updateData,
+            }),
+          })
+
+          if (response.ok) {
+            const result = await response.json()
+            console.log('Google Calendar event updated successfully:', result)
+          } else {
+            console.error('Failed to update Google Calendar event:', await response.text())
+          }
+        } catch (calendarError) {
+          console.error('Error updating Google Calendar event:', calendarError)
+          // Don't fail the entire event update if calendar fails
+        }
+      }
 
       router.push("/dashboard/admin/events")
       router.refresh()
