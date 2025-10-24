@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { CalendarIntegration } from "@/components/calendar-integration"
+import { CalendarService, CalendarEvent } from "@/lib/calendar"
 
 interface CreateEventFormProps {
   userId: string
@@ -19,6 +21,8 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [showCalendarIntegration, setShowCalendarIntegration] = useState(false)
+  const [createdEvent, setCreatedEvent] = useState<CalendarEvent | null>(null)
   const router = useRouter()
   const supabase = createClient()
 
@@ -37,18 +41,25 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
     try {
       const fileExt = file.name.split('.').pop()
       const fileName = `${Date.now()}.${fileExt}`
-      const filePath = `event-images/${fileName}`
+      // Remove the folder prefix - upload directly to bucket root
+      const filePath = fileName
+
+      console.log('Uploading image:', { fileName, filePath, bucket: 'event-images' })
 
       const { error: uploadError } = await supabase.storage
         .from('event-images')
         .upload(filePath, file)
 
-      if (uploadError) throw uploadError
+      if (uploadError) {
+        console.error('Upload error:', uploadError)
+        throw uploadError
+      }
 
       const { data } = supabase.storage
         .from('event-images')
         .getPublicUrl(filePath)
 
+      console.log('Upload successful:', data.publicUrl)
       return data.publicUrl
     } catch (error) {
       console.error('Error uploading image:', error)
@@ -91,8 +102,21 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
 
       if (error) throw error
 
-      router.push("/dashboard/admin/events")
-      router.refresh()
+      // Show calendar integration after successful event creation
+      const calendarEvent: CalendarEvent = {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        startDate: eventDate,
+        endDate: new Date(eventDate.getTime() + 2 * 60 * 60 * 1000), // Default 2 hours duration
+        location: formData.get("location") as string,
+      }
+      
+      setCreatedEvent(calendarEvent)
+      setShowCalendarIntegration(true)
+
+      // Don't redirect immediately, let user add to calendar first
+      // router.push("/dashboard/admin/events")
+      // router.refresh()
     } catch (error) {
       console.error("[v0] Error creating event:", error)
       setError("Erro ao criar evento. Tente novamente.")
@@ -101,8 +125,22 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
     }
   }
 
+  const handleCalendarComplete = () => {
+    setShowCalendarIntegration(false)
+    router.push("/dashboard/admin/events")
+    router.refresh()
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="space-y-6">
+      {showCalendarIntegration && createdEvent && (
+        <CalendarIntegration 
+          event={createdEvent} 
+          onClose={handleCalendarComplete}
+        />
+      )}
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="title" className="text-white">
           Título do Evento
@@ -232,5 +270,6 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
         </Button>
       </div>
     </form>
+    </div>
   )
 }

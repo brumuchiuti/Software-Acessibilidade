@@ -74,7 +74,7 @@ export default async function EventsPage() {
                     className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors overflow-hidden"
                   >
                     {event.image_url && (
-                      <div className="relative h-48 w-full">
+                      <div className="relative aspect-square w-full">
                         <Image
                           src={event.image_url}
                           alt={event.title}
