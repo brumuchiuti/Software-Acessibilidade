@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, MapPin, Users, Clock, Trophy, ArrowLeft } from "lucide-react"
+import { Calendar, MapPin, Users, Clock, Trophy, ArrowLeft, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { RegisterEventButton } from "@/components/register-event-button"
@@ -67,10 +67,20 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
-        <div>
+        <div className="flex-1">
           <h1 className="text-4xl font-bold text-white mb-2">{event.title}</h1>
           <div className="flex items-center gap-2">{getStatusBadge()}</div>
         </div>
+        <Button
+          asChild
+          variant="outline"
+          className="border-green-500/40 text-green-400 bg-transparent hover:bg-green-500/10"
+        >
+          <Link href={`/public/events/${event.id}`} target="_blank">
+            <Share2 className="mr-2 h-4 w-4" />
+            Compartilhar
+          </Link>
+        </Button>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

@@ -5,12 +5,11 @@ import { EditEventForm } from "@/components/edit-event-form"
 import { notFound } from "next/navigation"
 
 interface EditEventPageProps {
-  params: {
-    id: string
-  }
+  params: Promise<{ id: string }>
 }
 
 export default async function EditEventPage({ params }: EditEventPageProps) {
+  const { id } = await params
   const supabase = await createClient()
 
   const {
@@ -29,7 +28,7 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
   const { data: event, error } = await supabase
     .from("events")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single()
 
   if (error || !event) {

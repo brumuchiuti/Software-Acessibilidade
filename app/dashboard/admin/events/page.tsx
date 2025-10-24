@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, MapPin, Plus } from "lucide-react"
+import { Calendar, MapPin, Plus, Share2 } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminEventsPage() {
@@ -92,6 +92,17 @@ export default async function AdminEventsPage() {
                       className="border-[#FFD700]/40 text-[#FFD700] bg-transparent"
                     >
                       <Link href={`/dashboard/admin/events/${event.id}/edit`}>Editar</Link>
+                    </Button>
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                      className="border-green-500/40 text-green-400 bg-transparent"
+                    >
+                      <Link href={`/public/events/${event.id}`} target="_blank">
+                        <Share2 className="mr-1 h-3 w-3" />
+                        Compartilhar
+                      </Link>
                     </Button>
                     <Button asChild size="sm" className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
                       <Link href={`/dashboard/admin/attendance?event=${event.id}`}>Presenças</Link>
