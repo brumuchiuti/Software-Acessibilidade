@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { Logo } from "@/components/logo"
 
 export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[#001f3f] via-[#003366] to-black p-6 text-center">
       <div className="max-w-3xl space-y-8">
         <div className="space-y-4">
-          <h1 className="text-6xl font-bold text-white">IFL Jovem SP</h1>
-          <p className="text-2xl text-[#FFD700] font-semibold">Instituto de Formação de Líderes</p>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">
-            Desenvolvendo jovens líderes através de eventos, atividades e engajamento comunitário.
-          </p>
+          <Logo size="xxxl" className="justify-center" href="" />
+          {/* <p className="text-lg text-white/80 max-w-2xl mx-auto">
+            Instituto de Formação de Líderes
+          </p> */}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

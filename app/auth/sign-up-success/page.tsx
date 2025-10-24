@@ -1,14 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { Logo } from "@/components/logo"
 
 export default function SignUpSuccessPage() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-[#001f3f] via-[#003366] to-black p-6">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-2">IFL Jovem SP</h1>
-          <p className="text-[#FFD700]">Instituto de Formação de Líderes</p>
+          <Logo size="lg" showText={true} className="justify-center" href="" />
         </div>
 
         <Card className="border-[#FFD700]/20">

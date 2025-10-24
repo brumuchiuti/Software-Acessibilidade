@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { Logo } from "@/components/logo"
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("")
@@ -62,8 +63,7 @@ export default function SignUpPage() {
     <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-[#001f3f] via-[#003366] to-black p-6">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-2">IFL Jovem SP</h1>
-          <p className="text-[#FFD700]">Instituto de Formação de Líderes</p>
+          <Logo size="lg" showText={true} className="justify-center" href="" />
         </div>
 
         <Card className="border-[#FFD700]/20">

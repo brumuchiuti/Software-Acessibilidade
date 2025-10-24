@@ -2,7 +2,9 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { RoleBadge } from "@/components/role-badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Mail, Phone, Calendar, Trophy } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Mail, Phone, Calendar, Trophy, Linkedin, Instagram, Edit } from "lucide-react"
+import Link from "next/link"
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -32,8 +34,18 @@ export default async function ProfilePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Meu Perfil</h1>
-        <p className="text-white/60">Visualize e gerencie suas informações</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-white mb-2">Meu Perfil</h1>
+            <p className="text-white/60">Visualize e gerencie suas informações</p>
+          </div>
+          <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+            <Link href="/dashboard/profile/edit">
+              <Edit className="mr-2 h-4 w-4" />
+              Editar Perfil
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
@@ -44,11 +56,11 @@ export default async function ProfilePage() {
           <CardContent className="space-y-6">
             <div className="flex flex-col items-center">
               <Avatar className="h-32 w-32 mb-4">
-                <AvatarImage src={profile?.avatar_url || ""} alt={profile?.full_name} />
+                <AvatarImage src={profile?.avatar_url || ""} alt={profile?.full_name} className="object-cover" />
                 <AvatarFallback className="bg-[#FFD700] text-black text-3xl">
                   {profile?.full_name
                     .split(" ")
-                    .map((n) => n[0])
+                    .map((n: any) => n[0])
                     .join("")
                     .toUpperCase()
                     .slice(0, 2)}
@@ -87,10 +99,49 @@ export default async function ProfilePage() {
               </div>
             </div>
 
-            {profile?.bio && (
+            {(profile?.bio || profile?.description) && (
               <div className="pt-4 border-t border-white/10">
                 <h3 className="text-sm font-medium text-white mb-2">Sobre</h3>
-                <p className="text-sm text-white/70">{profile.bio}</p>
+                {profile?.bio && (
+                  <p className="text-sm text-white/70 mb-2">{profile.bio}</p>
+                )}
+                {profile?.description && (
+                  <p className="text-sm text-white/70">{profile.description}</p>
+                )}
+              </div>
+            )}
+
+            {(profile?.linkedin_url || profile?.instagram_url) && (
+              <div className="pt-4 border-t border-white/10">
+                <h3 className="text-sm font-medium text-white mb-2">Redes Sociais</h3>
+                <div className="space-y-2">
+                  {profile?.linkedin_url && (
+                    <div className="flex items-center gap-2">
+                      <Linkedin className="h-4 w-4 text-[#FFD700]" />
+                      <a
+                        href={profile.linkedin_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-white/70 hover:text-[#FFD700] transition-colors"
+                      >
+                        LinkedIn
+                      </a>
+                    </div>
+                  )}
+                  {profile?.instagram_url && (
+                    <div className="flex items-center gap-2">
+                      <Instagram className="h-4 w-4 text-[#FFD700]" />
+                      <a
+                        href={profile.instagram_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-white/70 hover:text-[#FFD700] transition-colors"
+                      >
+                        Instagram
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </CardContent>

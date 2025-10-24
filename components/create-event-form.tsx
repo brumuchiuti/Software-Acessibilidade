@@ -18,8 +18,43 @@ interface CreateEventFormProps {
 export function CreateEventForm({ userId }: CreateEventFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const router = useRouter()
   const supabase = createClient()
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Date.now()}.${fileExt}`
+      const filePath = `event-images/${fileName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('event-images')
+        .upload(filePath, file)
+
+      if (uploadError) throw uploadError
+
+      const { data } = supabase.storage
+        .from('event-images')
+        .getPublicUrl(filePath)
+
+      return data.publicUrl
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      return null
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -30,6 +65,15 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
 
     try {
       const eventDate = new Date(`${formData.get("date")}T${formData.get("time")}`)
+      
+      let imageUrl = null
+      const imageFile = formData.get("image") as File
+      if (imageFile && imageFile.size > 0) {
+        imageUrl = await uploadImage(imageFile)
+        if (!imageUrl) {
+          throw new Error("Erro ao fazer upload da imagem")
+        }
+      }
 
       const { error } = await supabase.from("events").insert({
         title: formData.get("title") as string,
@@ -41,6 +85,7 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
         max_participants: formData.get("max_participants")
           ? Number.parseInt(formData.get("max_participants") as string)
           : null,
+        image_url: imageUrl,
         created_by: userId,
       })
 
@@ -76,6 +121,29 @@ export function CreateEventForm({ userId }: CreateEventFormProps) {
           required
           className="bg-white/5 border-white/10 text-white"
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="image" className="text-white">
+          Imagem do Evento (opcional)
+        </Label>
+        <Input
+          id="image"
+          name="image"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="bg-white/5 border-white/10 text-white file:bg-[#FFD700] file:text-black file:border-0 file:rounded file:px-4 file:py-2 file:mr-4"
+        />
+        {imagePreview && (
+          <div className="mt-2">
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="w-32 h-32 object-cover rounded-lg border border-white/10"
+            />
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4">

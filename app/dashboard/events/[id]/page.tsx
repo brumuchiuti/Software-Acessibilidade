@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { RegisterEventButton } from "@/components/register-event-button"
 import { notFound } from "next/navigation"
+import Image from "next/image"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -73,6 +75,19 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
       <div className="grid gap-6 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
+          {event.image_url && (
+            <Card className="bg-white/5 border-[#FFD700]/20 overflow-hidden">
+              <div className="relative h-64 w-full">
+                <Image
+                  src={event.image_url}
+                  alt={event.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </Card>
+          )}
+          
           <Card className="bg-white/5 border-[#FFD700]/20">
             <CardHeader>
               <CardTitle className="text-white">Sobre o Evento</CardTitle>
@@ -173,7 +188,18 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                       key={attendee.id}
                       className="flex items-center justify-between border-b border-white/10 pb-3 last:border-0 last:pb-0"
                     >
-                      <div>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={attendee.profiles?.avatar_url || ""} alt={attendee.profiles?.full_name} className="object-cover" />
+                          <AvatarFallback className="bg-[#FFD700] text-black">
+                            {attendee.profiles?.full_name
+                              .split(" ")
+                              .map((n: any) => n[0])
+                              .join("")
+                              .toUpperCase()
+                              .slice(0, 2)}
+                          </AvatarFallback>
+                        </Avatar>
                         <p className="text-sm font-medium text-white">{attendee.profiles?.full_name}</p>
                         {attendee.attended && (
                           <Badge className="mt-1 bg-green-600/20 text-green-400 text-xs">Presente</Badge>

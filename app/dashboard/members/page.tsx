@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { RoleBadge } from "@/components/role-badge"
-import { Users } from "lucide-react"
+import { Users, Linkedin, Instagram } from "lucide-react"
 
 export default async function MembersPage() {
   const supabase = await createClient()
@@ -67,11 +67,11 @@ export default async function MembersPage() {
                     <CardContent className="pt-6">
                       <div className="flex flex-col items-center text-center space-y-4">
                         <Avatar className="h-20 w-20">
-                          <AvatarImage src={member.avatar_url || ""} alt={member.full_name} />
+                          <AvatarImage src={member.avatar_url || ""} alt={member.full_name} className="object-cover" />
                           <AvatarFallback className="bg-[#FFD700] text-black text-xl">
                             {member.full_name
                               .split(" ")
-                              .map((n) => n[0])
+                              .map((n: any) => n[0])
                               .join("")
                               .toUpperCase()
                               .slice(0, 2)}
@@ -83,7 +83,37 @@ export default async function MembersPage() {
                           <RoleBadge role={member.role} directorTitle={member.director_title} />
                         </div>
 
-                        {member.bio && <p className="text-sm text-white/70 line-clamp-2">{member.bio}</p>}
+                        {(member.bio || member.description) && (
+                          <div className="text-sm text-white/70 line-clamp-3">
+                            {member.bio && <p className="mb-1">{member.bio}</p>}
+                            {member.description && <p>{member.description}</p>}
+                          </div>
+                        )}
+
+                        {(member.linkedin_url || member.instagram_url) && (
+                          <div className="flex items-center gap-3">
+                            {member.linkedin_url && (
+                              <a
+                                href={member.linkedin_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-white/60 hover:text-[#FFD700] transition-colors"
+                              >
+                                <Linkedin className="h-4 w-4" />
+                              </a>
+                            )}
+                            {member.instagram_url && (
+                              <a
+                                href={member.instagram_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-white/60 hover:text-[#FFD700] transition-colors"
+                              >
+                                <Instagram className="h-4 w-4" />
+                              </a>
+                            )}
+                          </div>
+                        )}
 
                         <div className="w-full pt-4 border-t border-white/10 flex items-center justify-between">
                           <span className="text-sm text-white/60">Pontos</span>

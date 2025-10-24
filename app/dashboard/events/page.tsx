@@ -2,8 +2,9 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, MapPin, Users, Clock } from "lucide-react"
+import { Calendar, MapPin, Users, Clock, Image as ImageIcon } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default async function EventsPage() {
   const supabase = await createClient()
@@ -70,8 +71,18 @@ export default async function EventsPage() {
                 return (
                   <Card
                     key={event.id}
-                    className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors"
+                    className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors overflow-hidden"
                   >
+                    {event.image_url && (
+                      <div className="relative h-48 w-full">
+                        <Image
+                          src={event.image_url}
+                          alt={event.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <CardTitle className="text-white text-lg">{event.title}</CardTitle>
@@ -141,25 +152,37 @@ export default async function EventsPage() {
               {pastEvents.map((event) => {
                 const status = getEventStatus(event)
                 return (
-                  <Card key={event.id} className="bg-white/5 border-[#FFD700]/20">
+                  <Card key={event.id} className="bg-white/5 border-[#FFD700]/20 overflow-hidden">
                     <CardContent className="py-4">
                       <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-semibold text-white">{event.title}</h3>
-                            {getStatusBadge(status)}
-                          </div>
-                          <div className="flex items-center gap-4 text-sm text-white/60">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {new Date(event.event_date).toLocaleDateString("pt-BR")}
-                            </span>
-                            {event.location && (
+                        <div className="flex items-center gap-4 flex-1">
+                          {event.image_url && (
+                            <div className="relative h-16 w-16 flex-shrink-0">
+                              <Image
+                                src={event.image_url}
+                                alt={event.title}
+                                fill
+                                className="object-cover rounded-lg"
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-lg font-semibold text-white">{event.title}</h3>
+                              {getStatusBadge(status)}
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-white/60">
                               <span className="flex items-center gap-1">
-                                <MapPin className="h-3 w-3" />
-                                {event.location}
+                                <Calendar className="h-3 w-3" />
+                                {new Date(event.event_date).toLocaleDateString("pt-BR")}
                               </span>
-                            )}
+                              {event.location && (
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="h-3 w-3" />
+                                  {event.location}
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
                         <div className="flex items-center gap-4">

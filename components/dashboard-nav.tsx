@@ -14,12 +14,14 @@ import {
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { Home, Calendar, Trophy, Users, Settings, LogOut, Activity } from "lucide-react"
+import { Logo } from "@/components/logo"
 
 interface DashboardNavProps {
   user: {
     email: string
     full_name: string
     role: string
+    avatar_url: string
   }
 }
 
@@ -54,9 +56,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-[#FFD700]">IFL Jovem SP</span>
-            </Link>
+            <Logo size="sm" showText={true} />
 
             <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => {
@@ -99,7 +99,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                 <Avatar>
-                  <AvatarImage src="/placeholder.svg" alt={user.full_name} />
+                  <AvatarImage src={user.avatar_url || ""} alt={user.full_name} className="object-cover" />
                   <AvatarFallback className="bg-[#FFD700] text-black">
                     {user.full_name
                       .split(" ")
