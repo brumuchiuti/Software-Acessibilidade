@@ -12,8 +12,11 @@ export const metadata: Metadata = {
   title: "IFL Jovem SP",
   description: "Instituto de Formação de Líderes - Jovem São Paulo",
   icons: {
-    icon: "/logo-ifl-jovem-sp-square.png",
-  }
+    icon: [
+      { url: "/logo-light.png", media: "(prefers-color-scheme: light)" },
+      { url: "/logo-dark.png", media: "(prefers-color-scheme: dark)" },
+    ],
+  },
 }
 
 export default function RootLayout({
