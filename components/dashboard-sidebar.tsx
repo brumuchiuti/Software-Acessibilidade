@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { Home, Calendar, Trophy, Users, Settings, LogOut, GraduationCap } from "lucide-react"
+import { Home, Calendar, Trophy, Users, Settings, LogOut, GraduationCap, Briefcase } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -57,6 +57,7 @@ export function DashboardSidebar({ user, children }: DashboardSidebarProps) {
     { href: "/dashboard/events", label: "Eventos", icon: Calendar },
     { href: "/dashboard/ranking", label: "Ranking", icon: Trophy },
     { href: "/dashboard/ciclo-formacao", label: "Ciclo de Formação", icon: GraduationCap },
+    { href: "/dashboard/opportunities", label: "Oportunidades", icon: Briefcase },
     { href: "/dashboard/members", label: "Membros", icon: Users },
   ]
 

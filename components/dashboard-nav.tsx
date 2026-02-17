@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { Home, Calendar, Trophy, Users, Settings, LogOut, Activity, Menu, X } from "lucide-react"
+import { Home, Calendar, Trophy, Users, Settings, LogOut, Activity, Menu, X, Briefcase } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { useState } from "react"
 
@@ -48,6 +48,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
     { href: "/dashboard", label: "Início", icon: Home },
     { href: "/dashboard/events", label: "Eventos", icon: Calendar },
     { href: "/dashboard/ranking", label: "Ranking", icon: Trophy },
+    { href: "/dashboard/opportunities", label: "Oportunidades", icon: Briefcase },
     { href: "/dashboard/members", label: "Membros", icon: Users },
   ]
 

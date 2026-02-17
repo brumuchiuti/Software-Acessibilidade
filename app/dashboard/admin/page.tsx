@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Calendar, Users, Activity, Plus, GraduationCap, UserCheck } from "lucide-react"
+import { Calendar, Users, Activity, Plus, GraduationCap, UserCheck, Briefcase } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminPage() {
@@ -204,6 +204,26 @@ export default async function AdminPage() {
               <Link href="/dashboard/admin/activities">
                 <Plus className="mr-2 h-4 w-4" />
                 Acessar Atividades
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors">
+          <CardHeader>
+            <CardTitle className="text-foreground flex items-center gap-2">
+              <Briefcase className="h-5 w-5 text-[#FFD700]" />
+              Oportunidades
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Cadastrar oportunidades que o instituto oferece aos membros
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+              <Link href="/dashboard/admin/opportunities">
+                <Plus className="mr-2 h-4 w-4" />
+                Gerenciar Oportunidades
               </Link>
             </Button>
           </CardContent>

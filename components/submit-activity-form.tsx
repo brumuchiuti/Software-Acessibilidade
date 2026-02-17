@@ -117,11 +117,11 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="activity" className="text-white">
+        <Label htmlFor="activity" className="text-foreground">
           Selecione a Atividade *
         </Label>
         <Select value={selectedActivity} onValueChange={setSelectedActivity} required>
-          <SelectTrigger className="bg-white/5 border-white/10 text-white">
+          <SelectTrigger className="bg-muted border-border text-foreground">
             <SelectValue placeholder="Escolha uma atividade" />
           </SelectTrigger>
           <SelectContent>
@@ -135,22 +135,22 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
       </div>
 
       {selectedActivityData && (
-        <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-          <h3 className="text-white font-semibold mb-2">{selectedActivityData.title}</h3>
-          <p className="text-white/60 text-sm mb-2">{selectedActivityData.description}</p>
+        <div className="p-4 rounded-lg bg-muted border border-border">
+          <h3 className="text-foreground font-semibold mb-2">{selectedActivityData.title}</h3>
+          <p className="text-muted-foreground text-sm mb-2">{selectedActivityData.description}</p>
           <div className="flex items-center gap-4 text-sm">
-            <span className="text-white/60">
-              Tipo: <span className="text-white">{selectedActivityData.activity_type}</span>
+            <span className="text-muted-foreground">
+              Tipo: <span className="text-foreground">{selectedActivityData.activity_type}</span>
             </span>
-            <span className="text-white/60">
-              Pontos: <span className="text-[#FFD700]">{selectedActivityData.points_value}</span>
+            <span className="text-muted-foreground">
+              Pontos: <span className="text-primary">{selectedActivityData.points_value}</span>
             </span>
           </div>
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="notes" className="text-white">
+        <Label htmlFor="notes" className="text-foreground">
           Notas / Descrição da sua participação
         </Label>
         <Textarea
@@ -158,13 +158,13 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Descreva como você participou desta atividade..."
-          className="bg-white/5 border-white/10 text-white placeholder:text-white/40 min-h-[120px]"
+          className="bg-muted border-border text-foreground placeholder:text-muted-foreground min-h-[120px]"
         />
-        <p className="text-xs text-white/60">Opcional: Forneça detalhes sobre sua participação</p>
+        <p className="text-xs text-muted-foreground">Opcional: Forneça detalhes sobre sua participação</p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="image" className="text-white">
+        <Label htmlFor="image" className="text-foreground">
           Anexar imagem (opcional)
         </Label>
         <input
@@ -180,14 +180,14 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-32 h-32 object-cover rounded-lg border border-white/10"
+              className="w-32 h-32 object-cover rounded-lg border border-border"
             />
             <Button
               type="button"
               variant="outline"
               size="icon"
               onClick={handleRemoveImage}
-              className="absolute -top-2 -right-2 h-6 w-6 rounded-full border-white/10 bg-white/10 text-white hover:bg-red-500/20 hover:text-red-400"
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full border-border bg-muted text-foreground hover:bg-destructive/20 hover:text-destructive"
             >
               <X className="h-3 w-3" />
             </Button>
@@ -197,13 +197,13 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
             type="button"
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
-            className="border-white/10 text-white hover:bg-white/5"
+            className="border-border text-foreground hover:bg-muted"
           >
             <ImagePlus className="h-4 w-4 mr-2" />
             Selecionar imagem
           </Button>
         )}
-        <p className="text-xs text-white/60">Adicione uma foto como comprovante da atividade (opcional)</p>
+        <p className="text-xs text-muted-foreground">Adicione uma foto como comprovante da atividade (opcional)</p>
       </div>
 
       <div className="flex gap-4">
@@ -211,7 +211,7 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
           type="button"
           variant="outline"
           onClick={() => router.back()}
-          className="flex-1 border-white/10 text-white hover:bg-white/5"
+          className="flex-1 border-border text-foreground hover:bg-muted"
           disabled={loading}
         >
           Cancelar
