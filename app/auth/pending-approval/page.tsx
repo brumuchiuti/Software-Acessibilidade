@@ -2,8 +2,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Logo } from "@/components/logo"
+import { Clock } from "lucide-react"
 
-export default function SignUpSuccessPage() {
+export default function PendingApprovalPage() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-[#001f3f] via-[#003366] to-black p-6">
       <div className="w-full max-w-md">
@@ -13,18 +14,23 @@ export default function SignUpSuccessPage() {
 
         <Card className="border-[#FFD700]/20">
           <CardHeader>
-            <CardTitle className="text-2xl">Obrigado por se cadastrar!</CardTitle>
-            <CardDescription>Verifique seu email e aguarde aprovação</CardDescription>
+            <div className="flex items-center gap-2">
+              <Clock className="h-6 w-6 text-[#FFD700]" />
+              <CardTitle className="text-2xl">Aguardando Aprovação</CardTitle>
+            </div>
+            <CardDescription>
+              Sua conta foi criada com sucesso e está aguardando aprovação
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Você se cadastrou com sucesso. Por favor, verifique seu email para confirmar sua conta.
+              Um administrador do IFL Jovem SP precisa aprovar seu cadastro antes que você possa acessar o painel.
+              Você será notificado assim que sua conta for aprovada.
             </p>
             <p className="text-sm text-muted-foreground">
-              Após confirmar o email, um administrador do IFL Jovem SP precisará aprovar seu cadastro. Você receberá
-              acesso ao painel assim que for aprovado.
+              Em caso de dúvidas, entre em contato com a diretoria.
             </p>
-            <Button asChild className="w-full bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+            <Button asChild variant="outline" className="w-full border-[#FFD700]/40 text-foreground hover:bg-[#FFD700]/10">
               <Link href="/auth/login">Voltar para Login</Link>
             </Button>
           </CardContent>

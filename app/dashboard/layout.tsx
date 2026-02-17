@@ -28,7 +28,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
     if (!profile) {
       console.log("[v0] Profile not found, creating new profile")
-      // Create profile if it doesn't exist
+      // Create profile if it doesn't exist (approved: false - awaits admin approval)
       const { data: newProfile, error } = await supabase
         .from("profiles")
         .insert({
@@ -36,6 +36,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           email: user.email!,
           full_name: user.user_metadata?.full_name || "Novo Membro",
           role: "associado_i",
+          approved: false,
         })
         .select()
         .single()
@@ -48,6 +49,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
       }
 
       profile = newProfile
+    }
+
+    const isAdmin = profile && profile.board_role !== null
+    const isApproved = profile?.approved === true
+
+    if (!isAdmin && !isApproved) {
+      redirect("/auth/pending-approval")
     }
 
     console.log("[v0] Rendering dashboard with profile:", profile)

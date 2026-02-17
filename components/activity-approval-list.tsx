@@ -154,6 +154,21 @@ export default function ActivityApprovalList({ participations }: ActivityApprova
                   <p className="text-white/80 text-sm">{participation.notes}</p>
                 </div>
               )}
+              {participation.image_url && (
+                <a
+                  href={participation.image_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mt-2"
+                >
+                  <img
+                    src={participation.image_url}
+                    alt="Comprovante"
+                    className="w-24 h-24 object-cover rounded-lg border border-white/10 hover:opacity-90"
+                  />
+                  <span className="text-xs text-white/60 mt-1 block">Clique para ampliar</span>
+                </a>
+              )}
             </div>
             <div className="flex gap-2">
               <Button

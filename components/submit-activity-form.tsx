@@ -2,13 +2,14 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/client"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ImagePlus, X } from "lucide-react"
 
 interface Activity {
   id: string
@@ -28,6 +29,50 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
   const [loading, setLoading] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<string>("")
   const [notes, setNotes] = useState("")
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    const supabase = createClient()
+    try {
+      const fileExt = file.name.split(".").pop()
+      const fileName = `${userId}-${Date.now()}.${fileExt}`
+      const filePath = `activity-participation/${fileName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from("event-images")
+        .upload(filePath, file)
+
+      if (uploadError) throw uploadError
+
+      const { data } = supabase.storage.from("event-images").getPublicUrl(filePath)
+      return data.publicUrl
+    } catch (error) {
+      console.error("Error uploading image:", error)
+      return null
+    }
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Por favor, selecione apenas arquivos de imagem (JPEG, PNG, etc.)")
+        return
+      }
+      setImageFile(file)
+      const reader = new FileReader()
+      reader.onload = (ev) => setImagePreview(ev.target?.result as string)
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setImageFile(null)
+    setImagePreview(null)
+    if (fileInputRef.current) fileInputRef.current.value = ""
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,10 +81,21 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
     try {
       const supabase = createClient()
 
+      let imageUrl: string | null = null
+      if (imageFile) {
+        imageUrl = await uploadImage(imageFile)
+        if (!imageUrl) {
+          alert("Erro ao fazer upload da imagem. Tente novamente.")
+          setLoading(false)
+          return
+        }
+      }
+
       const { error } = await supabase.from("activity_participation").insert({
         activity_id: selectedActivity,
         user_id: userId,
         notes: notes || null,
+        image_url: imageUrl,
         completed: false,
         points_earned: 0,
       })
@@ -105,6 +161,49 @@ export default function SubmitActivityForm({ activities, userId }: SubmitActivit
           className="bg-white/5 border-white/10 text-white placeholder:text-white/40 min-h-[120px]"
         />
         <p className="text-xs text-white/60">Opcional: Forneça detalhes sobre sua participação</p>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="image" className="text-white">
+          Anexar imagem (opcional)
+        </Label>
+        <input
+          ref={fileInputRef}
+          id="image"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="hidden"
+        />
+        {imagePreview ? (
+          <div className="relative inline-block">
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="w-32 h-32 object-cover rounded-lg border border-white/10"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={handleRemoveImage}
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full border-white/10 bg-white/10 text-white hover:bg-red-500/20 hover:text-red-400"
+            >
+              <X className="h-3 w-3" />
+            </Button>
+          </div>
+        ) : (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            className="border-white/10 text-white hover:bg-white/5"
+          >
+            <ImagePlus className="h-4 w-4 mr-2" />
+            Selecionar imagem
+          </Button>
+        )}
+        <p className="text-xs text-white/60">Adicione uma foto como comprovante da atividade (opcional)</p>
       </div>
 
       <div className="flex gap-4">

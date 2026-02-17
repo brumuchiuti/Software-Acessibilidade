@@ -140,6 +140,21 @@ export default async function ActivitiesPage() {
                     {participation.notes && (
                       <p className="text-muted-foreground text-sm mt-2 italic">Nota: {participation.notes}</p>
                     )}
+                    {participation.image_url && (
+                      <a
+                        href={participation.image_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block mt-2"
+                      >
+                        <img
+                          src={participation.image_url}
+                          alt="Comprovante"
+                          className="w-20 h-20 object-cover rounded-lg border border-border hover:opacity-90"
+                        />
+                        <span className="text-xs text-muted-foreground mt-1 block">Ver imagem</span>
+                      </a>
+                    )}
                   </div>
                   {participation.completed && (
                     <div className="text-right">
