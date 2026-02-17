@@ -35,21 +35,21 @@ export default async function AdminMembersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Gerenciar Membros</h1>
-        <p className="text-white/60">Visualize e gerencie informações dos membros</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Gerenciar Membros</h1>
+        <p className="text-muted-foreground">Visualize e gerencie informações dos membros</p>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Todos os Membros</CardTitle>
-          <CardDescription className="text-white/60">{allMembers?.length || 0} membros cadastrados</CardDescription>
+          <CardTitle className="text-foreground">Todos os Membros</CardTitle>
+          <CardDescription className="text-muted-foreground">{allMembers?.length || 0} membros cadastrados</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {allMembers?.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10"
+                className="flex items-center justify-between p-4 rounded-lg bg-card border border-border"
               >
                 <div className="flex items-center gap-4">
                   <Avatar className="h-12 w-12">
@@ -65,8 +65,8 @@ export default async function AdminMembersPage() {
                   </Avatar>
 
                   <div>
-                    <p className="font-semibold text-white">{member.full_name}</p>
-                    <p className="text-sm text-white/60">{member.email}</p>
+                    <p className="font-semibold text-foreground">{member.full_name}</p>
+                    <p className="text-sm text-muted-foreground">{member.email}</p>
                   </div>
                 </div>
 
@@ -78,7 +78,7 @@ export default async function AdminMembersPage() {
                   />
                   <div className="text-right">
                     <p className="text-lg font-bold text-[#FFD700]">{member.total_points}</p>
-                    <p className="text-xs text-white/60">pontos</p>
+                    <p className="text-xs text-muted-foreground">pontos</p>
                   </div>
                   <Button
                     asChild

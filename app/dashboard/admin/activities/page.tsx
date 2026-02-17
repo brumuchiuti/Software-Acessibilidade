@@ -75,8 +75,8 @@ export default async function AdminActivitiesPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-2">Gerenciar Atividades</h1>
-          <p className="text-white/60">Crie atividades e aprove submissões dos membros</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Gerenciar Atividades</h1>
+          <p className="text-muted-foreground">Crie atividades e aprove submissões dos membros</p>
         </div>
         <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
           <Link href="/dashboard/admin/activities/create">
@@ -87,27 +87,27 @@ export default async function AdminActivitiesPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader>
-            <CardTitle className="text-white">Total de Atividades</CardTitle>
+            <CardTitle className="text-foreground">Total de Atividades</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{activities?.length || 0}</div>
+            <div className="text-3xl font-bold text-foreground">{activities?.length || 0}</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader>
-            <CardTitle className="text-white">Pendentes</CardTitle>
+            <CardTitle className="text-foreground">Pendentes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-yellow-500">{pendingParticipations?.length || 0}</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader>
-            <CardTitle className="text-white">Aprovadas</CardTitle>
+            <CardTitle className="text-foreground">Aprovadas</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-green-500">{approvedParticipations?.length || 0}</div>
@@ -115,10 +115,10 @@ export default async function AdminActivitiesPage() {
         </Card>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Submissões Pendentes</CardTitle>
-          <CardDescription className="text-white/60">
+          <CardTitle className="text-foreground">Submissões Pendentes</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Aprove ou rejeite atividades submetidas pelos membros
           </CardDescription>
         </CardHeader>
@@ -127,15 +127,15 @@ export default async function AdminActivitiesPage() {
         </CardContent>
       </Card>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Atividades Disponíveis</CardTitle>
-          <CardDescription className="text-white/60">Todas as atividades criadas</CardDescription>
+          <CardTitle className="text-foreground">Atividades Disponíveis</CardTitle>
+          <CardDescription className="text-muted-foreground">Todas as atividades criadas</CardDescription>
         </CardHeader>
         <CardContent>
           {!activities || activities.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-white/60 mb-4">Nenhuma atividade criada ainda</p>
+              <p className="text-muted-foreground mb-4">Nenhuma atividade criada ainda</p>
               <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
                 <Link href="/dashboard/admin/activities/create">
                   <Plus className="mr-2 h-4 w-4" />
@@ -146,16 +146,16 @@ export default async function AdminActivitiesPage() {
           ) : (
             <div className="space-y-4">
               {activities.map((activity: any) => (
-                <div key={activity.id} className="p-4 rounded-lg bg-white/5 border border-white/10">
+                <div key={activity.id} className="p-4 rounded-lg bg-card border border-border">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white mb-2">{activity.title}</h3>
-                      <p className="text-white/60 text-sm mb-2">{activity.description}</p>
+                      <h3 className="text-lg font-semibold text-foreground mb-2">{activity.title}</h3>
+                      <p className="text-muted-foreground text-sm mb-2">{activity.description}</p>
                       <div className="flex items-center gap-4 text-sm">
-                        <span className="text-white/60">
-                          Tipo: <span className="text-white">{activity.activity_type}</span>
+                        <span className="text-muted-foreground">
+                          Tipo: <span className="text-foreground">{activity.activity_type}</span>
                         </span>
-                        <span className="text-white/60">
+                        <span className="text-muted-foreground">
                           Pontos: <span className="text-[#FFD700]">{activity.points_value}</span>
                         </span>
                       </div>

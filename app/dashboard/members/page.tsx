@@ -36,19 +36,19 @@ export default async function MembersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Membros</h1>
-        <p className="text-white/60">Conheça todos os membros do IFL Jovem SP</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Membros</h1>
+        <p className="text-muted-foreground">Conheça todos os membros do IFL Jovem SP</p>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <div>
-            <CardTitle className="text-white">Total de Membros</CardTitle>
-            <CardDescription className="text-white/60">Membros ativos na organização</CardDescription>
+            <CardTitle className="text-foreground">Total de Membros</CardTitle>
+            <CardDescription className="text-muted-foreground">Membros ativos na organização</CardDescription>
           </div>
           <div className="flex items-center gap-2">
-            <Users className="h-8 w-8 text-[#FFD700]" />
-            <span className="text-4xl font-bold text-[#FFD700]">{allMembers?.length || 0}</span>
+            <Users className="h-8 w-8 text-primary" />
+            <span className="text-4xl font-bold text-primary">{allMembers?.length || 0}</span>
           </div>
         </CardHeader>
       </Card>
@@ -59,14 +59,14 @@ export default async function MembersPage() {
 
           return (
             <div key={role}>
-              <h2 className="text-2xl font-bold text-white mb-4">
+              <h2 className="text-2xl font-bold text-foreground mb-4">
                 {roleLabels[role]} ({members.length})
               </h2>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {members.map((member) => (
                   <Card
                     key={member.id}
-                    className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors"
+                    className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors"
                   >
                     <CardContent className="pt-6">
                       <div className="flex flex-col items-center text-center space-y-4">
@@ -83,7 +83,7 @@ export default async function MembersPage() {
                         </Avatar>
 
                         <div className="space-y-2">
-                          <h3 className="text-lg font-bold text-white">{member.full_name}</h3>
+                          <h3 className="text-lg font-bold text-foreground">{member.full_name}</h3>
                           <RoleBadge 
                             boardRole={member.board_role}
                             developmentLevel={member.development_level}
@@ -92,7 +92,7 @@ export default async function MembersPage() {
                         </div>
 
                         {(member.bio || member.description) && (
-                          <div className="text-sm text-white/70 line-clamp-3">
+                          <div className="text-sm text-muted-foreground line-clamp-3">
                             {member.bio && <p className="mb-1">{member.bio}</p>}
                             {member.description && <p>{member.description}</p>}
                           </div>
@@ -105,7 +105,7 @@ export default async function MembersPage() {
                                 href={member.linkedin_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-white/60 hover:text-[#FFD700] transition-colors"
+                                className="text-muted-foreground hover:text-primary transition-colors"
                               >
                                 <Linkedin className="h-4 w-4" />
                               </a>
@@ -115,7 +115,7 @@ export default async function MembersPage() {
                                 href={member.instagram_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-white/60 hover:text-[#FFD700] transition-colors"
+                                className="text-muted-foreground hover:text-primary transition-colors"
                               >
                                 <Instagram className="h-4 w-4" />
                               </a>
@@ -123,9 +123,9 @@ export default async function MembersPage() {
                           </div>
                         )}
 
-                        <div className="w-full pt-4 border-t border-white/10 flex items-center justify-between">
-                          <span className="text-sm text-white/60">Pontos</span>
-                          <span className="text-lg font-bold text-[#FFD700]">{member.total_points}</span>
+                        <div className="w-full pt-4 border-t border-border flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">Pontos</span>
+                          <span className="text-lg font-bold text-primary">{member.total_points}</span>
                         </div>
                       </div>
                     </CardContent>

@@ -22,21 +22,21 @@ export default async function ProfileEditPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4">
-        <Button asChild variant="ghost" size="icon" className="text-white hover:text-[#FFD700] hover:bg-white/5">
+        <Button asChild variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-muted/50">
           <Link href="/dashboard/profile">
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
         <div>
-          <h1 className="text-4xl font-bold text-white mb-2">Editar Perfil</h1>
-          <p className="text-white/60">Atualize suas informações pessoais</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Editar Perfil</h1>
+          <p className="text-muted-foreground">Atualize suas informações pessoais</p>
         </div>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Informações Pessoais</CardTitle>
-          <CardDescription className="text-white/60">
+          <CardTitle className="text-foreground">Informações Pessoais</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Mantenha suas informações atualizadas para melhor comunicação
           </CardDescription>
         </CardHeader>

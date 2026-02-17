@@ -171,7 +171,7 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="title" className="text-white">
+          <Label htmlFor="title" className="text-foreground">
             Título do Evento
           </Label>
           <Input 
@@ -179,12 +179,12 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
             name="title" 
             required 
             defaultValue={event.title}
-            className="bg-white/5 border-white/10 text-white" 
+            className="bg-input border-border text-foreground" 
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description" className="text-white">
+          <Label htmlFor="description" className="text-foreground">
             Descrição
           </Label>
           <Textarea
@@ -193,12 +193,12 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
             rows={4}
             required
             defaultValue={event.description}
-            className="bg-white/5 border-white/10 text-white"
+            className="bg-input border-border text-foreground"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="image" className="text-white">
+          <Label htmlFor="image" className="text-foreground">
             Imagem do Evento (opcional)
           </Label>
           <Input
@@ -207,14 +207,14 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="bg-white/5 border-white/10 text-white file:bg-[#FFD700] file:text-black file:border-0 file:rounded file:px-4 file:py-2 file:mr-4"
+            className="bg-input border-border text-foreground file:bg-[#FFD700] file:text-black file:border-0 file:rounded file:px-4 file:py-2 file:mr-4"
           />
           {imagePreview && (
             <div className="mt-2">
               <img
                 src={imagePreview}
                 alt="Preview"
-                className="w-32 h-32 object-cover rounded-lg border border-white/10"
+                className="w-32 h-32 object-cover rounded-lg border border-border"
               />
               {hasNewImage && (
                 <p className="text-sm text-[#FFD700] mt-1">Nova imagem selecionada</p>
@@ -225,7 +225,7 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="date" className="text-white">
+            <Label htmlFor="date" className="text-foreground">
               Data
             </Label>
             <Input 
@@ -234,12 +234,12 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
               type="date" 
               required 
               defaultValue={formattedDate}
-              className="bg-white/5 border-white/10 text-white" 
+              className="bg-input border-border text-foreground" 
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="time" className="text-white">
+            <Label htmlFor="time" className="text-foreground">
               Horário
             </Label>
             <Input 
@@ -248,13 +248,13 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
               type="time" 
               required 
               defaultValue={formattedTime}
-              className="bg-white/5 border-white/10 text-white" 
+              className="bg-input border-border text-foreground" 
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="location" className="text-white">
+          <Label htmlFor="location" className="text-foreground">
             Local
           </Label>
           <Input 
@@ -262,13 +262,13 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
             name="location" 
             required 
             defaultValue={event.location}
-            className="bg-white/5 border-white/10 text-white" 
+            className="bg-input border-border text-foreground" 
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="points_value" className="text-white">
+            <Label htmlFor="points_value" className="text-foreground">
               Pontos
             </Label>
             <Input
@@ -278,12 +278,12 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
               min="0"
               defaultValue={event.points_value}
               required
-              className="bg-white/5 border-white/10 text-white"
+              className="bg-input border-border text-foreground"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="max_participants" className="text-white">
+            <Label htmlFor="max_participants" className="text-foreground">
               Máx. Participantes (opcional)
             </Label>
             <Input
@@ -292,17 +292,17 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
               type="number"
               min="1"
               defaultValue={event.max_participants || ""}
-              className="bg-white/5 border-white/10 text-white"
+              className="bg-input border-border text-foreground"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="status" className="text-white">
+          <Label htmlFor="status" className="text-foreground">
             Status
           </Label>
           <Select name="status" defaultValue={event.status}>
-            <SelectTrigger className="bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="bg-input border-border text-foreground">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -320,7 +320,7 @@ export function EditEventForm({ event, userId }: EditEventFormProps) {
           <Button
             type="button"
             variant="outline"
-            className="flex-1 border-white/20 text-white bg-transparent"
+            className="flex-1 border-border text-foreground bg-transparent"
             onClick={() => router.back()}
           >
             Cancelar

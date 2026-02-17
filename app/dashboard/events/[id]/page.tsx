@@ -52,7 +52,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     if (isRegistered) return <Badge className="bg-blue-600 hover:bg-blue-700">Você está Inscrito</Badge>
     if (isUpcoming)
       return (
-        <Badge variant="outline" className="border-[#FFD700] text-[#FFD700]">
+        <Badge variant="outline" className="border-[#FFD700] text-primary">
           Disponível
         </Badge>
       )
@@ -62,13 +62,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4">
-        <Button asChild variant="ghost" size="icon" className="text-white hover:text-[#FFD700] hover:bg-white/5">
+        <Button asChild variant="ghost" size="icon" className="text-foreground hover:text-primary hover:bg-muted/50">
           <Link href="/dashboard/events">
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
         <div className="flex-1">
-          <h1 className="text-4xl font-bold text-white mb-2">{event.title}</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-2">{event.title}</h1>
           <div className="flex items-center gap-2">{getStatusBadge()}</div>
         </div>
         <Button
@@ -86,7 +86,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <div className="grid gap-6 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
           {event.image_url && (
-            <Card className="bg-white/5 border-[#FFD700]/20 overflow-hidden rounded-2xl">
+            <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 overflow-hidden rounded-2xl">
               <div className="relative aspect-square w-full max-w-md mx-auto">
                 <Image
                   src={event.image_url}
@@ -98,19 +98,19 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </Card>
           )}
           
-          <Card className="bg-white/5 border-[#FFD700]/20">
+          <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
             <CardHeader>
-              <CardTitle className="text-white">Sobre o Evento</CardTitle>
+              <CardTitle className="text-foreground">Sobre o Evento</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-white/80 leading-relaxed">{event.description || "Sem descrição disponível."}</p>
+              <p className="text-muted-foreground leading-relaxed">{event.description || "Sem descrição disponível."}</p>
 
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                 <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-[#FFD700]" />
+                  <Calendar className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="text-xs text-white/60">Data</p>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-xs text-muted-foreground">Data</p>
+                    <p className="text-sm font-medium text-foreground">
                       {new Date(event.event_date).toLocaleDateString("pt-BR", {
                         day: "2-digit",
                         month: "long",
@@ -121,10 +121,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-[#FFD700]" />
+                  <Clock className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="text-xs text-white/60">Horário</p>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-xs text-muted-foreground">Horário</p>
+                    <p className="text-sm font-medium text-foreground">
                       {new Date(event.event_date).toLocaleTimeString("pt-BR", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -135,28 +135,28 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
                 {event.location && (
                   <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-[#FFD700]" />
+                    <MapPin className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="text-xs text-white/60">Local</p>
-                      <p className="text-sm font-medium text-white">{event.location}</p>
+                      <p className="text-xs text-muted-foreground">Local</p>
+                      <p className="text-sm font-medium text-foreground">{event.location}</p>
                     </div>
                   </div>
                 )}
 
                 <div className="flex items-center gap-3">
-                  <Trophy className="h-5 w-5 text-[#FFD700]" />
+                  <Trophy className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="text-xs text-white/60">Pontos</p>
-                    <p className="text-sm font-medium text-[#FFD700]">{event.points_value} pontos</p>
+                    <p className="text-xs text-muted-foreground">Pontos</p>
+                    <p className="text-sm font-medium text-primary">{event.points_value} pontos</p>
                   </div>
                 </div>
 
                 {event.max_participants && (
                   <div className="flex items-center gap-3">
-                    <Users className="h-5 w-5 text-[#FFD700]" />
+                    <Users className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="text-xs text-white/60">Vagas</p>
-                      <p className="text-sm font-medium text-white">
+                      <p className="text-xs text-muted-foreground">Vagas</p>
+                      <p className="text-sm font-medium text-foreground">
                         {attendees?.length || 0} / {event.max_participants}
                       </p>
                     </div>
@@ -165,16 +165,16 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               </div>
 
               {creator && (
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs text-white/60 mb-1">Criado por</p>
-                  <p className="text-sm font-medium text-white">{creator.full_name}</p>
+                <div className="pt-4 border-t border-border">
+                  <p className="text-xs text-muted-foreground mb-1">Criado por</p>
+                  <p className="text-sm font-medium text-foreground">{creator.full_name}</p>
                 </div>
               )}
             </CardContent>
           </Card>
 
           {isUpcoming && !hasAttended && (
-            <Card className="bg-white/5 border-[#FFD700]/20">
+            <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
               <CardContent className="py-6">
                 <RegisterEventButton eventId={event.id} isRegistered={isRegistered} />
               </CardContent>
@@ -183,10 +183,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         </div>
 
         <div className="space-y-6">
-          <Card className="bg-white/5 border-[#FFD700]/20">
+          <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
             <CardHeader>
-              <CardTitle className="text-white">Participantes</CardTitle>
-              <CardDescription className="text-white/60">
+              <CardTitle className="text-foreground">Participantes</CardTitle>
+              <CardDescription className="text-muted-foreground">
                 {attendees?.length || 0} {attendees?.length === 1 ? "pessoa inscrita" : "pessoas inscritas"}
               </CardDescription>
             </CardHeader>
@@ -196,7 +196,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                   {attendees.map((attendee) => (
                     <div
                       key={attendee.id}
-                      className="flex items-center justify-between border-b border-white/10 pb-3 last:border-0 last:pb-0"
+                      className="flex items-center justify-between border-b border-border pb-3 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
@@ -210,7 +210,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                               .slice(0, 2)}
                           </AvatarFallback>
                         </Avatar>
-                        <p className="text-sm font-medium text-white">{attendee.profiles?.full_name}</p>
+                        <p className="text-sm font-medium text-foreground">{attendee.profiles?.full_name}</p>
                         {attendee.attended && (
                           <Badge className="mt-1 bg-green-600/20 text-green-400 text-xs">Presente</Badge>
                         )}
@@ -219,7 +219,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-white/60">Nenhum participante ainda.</p>
+                <p className="text-sm text-muted-foreground">Nenhum participante ainda.</p>
               )}
             </CardContent>
           </Card>

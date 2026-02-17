@@ -49,7 +49,7 @@ export function AttendanceList({ attendees, eventId, pointsValue }: AttendanceLi
       {attendees.map((attendee) => (
         <div
           key={attendee.id}
-          className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10"
+          className="flex items-center justify-between p-4 rounded-lg bg-card border border-border"
         >
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12">
@@ -65,7 +65,7 @@ export function AttendanceList({ attendees, eventId, pointsValue }: AttendanceLi
             </Avatar>
 
             <div>
-              <p className="font-semibold text-white">{attendee.profiles?.full_name}</p>
+              <p className="font-semibold text-foreground">{attendee.profiles?.full_name}</p>
               <RoleBadge 
                 boardRole={attendee.profiles?.board_role}
                 developmentLevel={attendee.profiles?.development_level}
@@ -81,7 +81,7 @@ export function AttendanceList({ attendees, eventId, pointsValue }: AttendanceLi
                 <span className="text-sm font-medium">Presente</span>
               </div>
             ) : (
-              <div className="flex items-center gap-2 text-white/40">
+              <div className="flex items-center gap-2 text-muted-foreground">
                 <XCircle className="h-5 w-5" />
                 <span className="text-sm font-medium">Ausente</span>
               </div>
@@ -93,7 +93,7 @@ export function AttendanceList({ attendees, eventId, pointsValue }: AttendanceLi
               size="sm"
               className={
                 attendee.attended
-                  ? "bg-red-600 hover:bg-red-700 text-white"
+                  ? "bg-red-600 hover:bg-red-700 text-foreground"
                   : "bg-[#FFD700] text-black hover:bg-[#FFD700]/90"
               }
             >
@@ -104,7 +104,7 @@ export function AttendanceList({ attendees, eventId, pointsValue }: AttendanceLi
       ))}
 
       {attendees.length === 0 && (
-        <p className="text-center text-white/60 py-8">Nenhum membro inscrito neste evento ainda.</p>
+        <p className="text-center text-muted-foreground py-8">Nenhum membro inscrito neste evento ainda.</p>
       )}
     </div>
   )

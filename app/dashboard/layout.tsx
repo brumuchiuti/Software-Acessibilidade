@@ -1,7 +1,7 @@
 import type React from "react"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { DashboardNav } from "@/components/dashboard-nav"
+import { DashboardSidebar } from "@/components/dashboard-sidebar"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   console.log("[v0] Dashboard layout loading")
@@ -53,16 +53,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
     console.log("[v0] Rendering dashboard with profile:", profile)
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#001f3f] via-[#003366] to-black">
-        <DashboardNav
+      <div className="min-h-screen bg-background dark:bg-gradient-to-br dark:from-[#001f3f] dark:via-[#003366] dark:to-black">
+        <DashboardSidebar
           user={{
             email: user.email!,
             full_name: profile.full_name,
             role: profile.role,
             avatar_url: profile.avatar_url,
           }}
-        />
-        <main className="container mx-auto px-4 py-8">{children}</main>
+        >
+          <main className="container mx-auto px-4 py-8">{children}</main>
+        </DashboardSidebar>
       </div>
     )
   } catch (error) {

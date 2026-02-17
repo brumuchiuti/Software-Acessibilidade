@@ -38,14 +38,14 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Editar Evento</h1>
-        <p className="text-white/60">Atualize as informações do evento</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Editar Evento</h1>
+        <p className="text-muted-foreground">Atualize as informações do evento</p>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Informações do Evento</CardTitle>
-          <CardDescription className="text-white/60">
+          <CardTitle className="text-foreground">Informações do Evento</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Todos os campos são obrigatórios exceto quando indicado
           </CardDescription>
         </CardHeader>

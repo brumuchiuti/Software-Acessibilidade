@@ -62,7 +62,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Bem-vindo, {profile?.full_name.match(/\S+/)[0]}!</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Bem-vindo, {profile?.full_name.match(/\S+/)[0]}!</h1>
         <div className="flex items-center gap-2">
           <RoleBadge 
             boardRole={profile?.board_role}
@@ -73,56 +73,56 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Pontos Totais</CardTitle>
-            <Trophy className="h-4 w-4 text-[#FFD700]" />
+            <CardTitle className="text-sm font-medium text-foreground">Pontos Totais</CardTitle>
+            <Trophy className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-[#FFD700]">{profile?.total_points || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Seu ranking: #{userRank + 1}</p>
+            <div className="text-3xl font-bold text-primary">{profile?.total_points || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Seu ranking: #{userRank + 1}</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Eventos Participados</CardTitle>
-            <Calendar className="h-4 w-4 text-[#FFD700]" />
+            <CardTitle className="text-sm font-medium text-foreground">Eventos Participados</CardTitle>
+            <Calendar className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{userAttendance?.length || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Total de presenças</p>
+            <div className="text-3xl font-bold text-foreground">{userAttendance?.length || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Total de presenças</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Próximos Eventos</CardTitle>
-            <TrendingUp className="h-4 w-4 text-[#FFD700]" />
+            <CardTitle className="text-sm font-medium text-foreground">Próximos Eventos</CardTitle>
+            <TrendingUp className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{upcomingEvents?.length || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Eventos agendados</p>
+            <div className="text-3xl font-bold text-foreground">{upcomingEvents?.length || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Eventos agendados</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Membros Ativos</CardTitle>
-            <Users className="h-4 w-4 text-[#FFD700]" />
+            <CardTitle className="text-sm font-medium text-foreground">Membros Ativos</CardTitle>
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{topMembers?.length || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Top membros</p>
+            <div className="text-3xl font-bold text-foreground">{topMembers?.length || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Top membros</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader>
-            <CardTitle className="text-white">Próximos Eventos</CardTitle>
-            <CardDescription className="text-white/60">Eventos que você pode participar</CardDescription>
+            <CardTitle className="text-foreground">Próximos Eventos</CardTitle>
+            <CardDescription className="text-muted-foreground">Eventos que você pode participar</CardDescription>
           </CardHeader>
           <CardContent>
             {upcomingEvents && upcomingEvents.length > 0 ? (
@@ -130,11 +130,11 @@ export default async function DashboardPage() {
                 {upcomingEvents.map((event) => (
                   <div
                     key={event.id}
-                    className="flex items-start justify-between border-b border-white/10 pb-4 last:border-0 last:pb-0"
+                    className="flex items-start justify-between border-b border-border pb-4 last:border-0 last:pb-0"
                   >
                     <div>
-                      <p className="font-medium text-white">{event.title}</p>
-                      <p className="text-sm text-white/60">
+                      <p className="font-medium text-foreground">{event.title}</p>
+                      <p className="text-sm text-muted-foreground">
                         {new Date(event.event_date).toLocaleDateString("pt-BR", {
                           day: "2-digit",
                           month: "long",
@@ -144,20 +144,20 @@ export default async function DashboardPage() {
                         })}
                       </p>
                     </div>
-                    <span className="text-sm font-medium text-[#FFD700]">{event.points_value} pts</span>
+                    <span className="text-sm font-medium text-primary">{event.points_value} pts</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-white/60 text-sm">Nenhum evento agendado no momento.</p>
+              <p className="text-muted-foreground text-sm">Nenhum evento agendado no momento.</p>
             )}
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader>
-            <CardTitle className="text-white">Top 5 Membros</CardTitle>
-            <CardDescription className="text-white/60">Ranking por pontuação</CardDescription>
+            <CardTitle className="text-foreground">Top 5 Membros</CardTitle>
+            <CardDescription className="text-muted-foreground">Ranking por pontuação</CardDescription>
           </CardHeader>
           <CardContent>
             {topMembers && topMembers.length > 0 ? (
@@ -165,12 +165,12 @@ export default async function DashboardPage() {
                 {topMembers.map((member, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between border-b border-white/10 pb-4 last:border-0 last:pb-0"
+                    className="flex items-center justify-between border-b border-border pb-4 last:border-0 last:pb-0"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl font-bold text-[#FFD700]">#{index + 1}</span>
+                      <span className="text-2xl font-bold text-primary">#{index + 1}</span>
                       <div>
-                        <p className="font-medium text-white">{member.full_name}</p>
+                        <p className="font-medium text-foreground">{member.full_name}</p>
                         <RoleBadge 
                           boardRole={member.board_role}
                           developmentLevel={member.development_level}
@@ -178,12 +178,12 @@ export default async function DashboardPage() {
                         />
                       </div>
                     </div>
-                    <span className="text-sm font-medium text-[#FFD700]">{member.total_points} pts</span>
+                    <span className="text-sm font-medium text-primary">{member.total_points} pts</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-white/60 text-sm">Nenhum membro encontrado.</p>
+              <p className="text-muted-foreground text-sm">Nenhum membro encontrado.</p>
             )}
           </CardContent>
         </Card>

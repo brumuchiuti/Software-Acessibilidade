@@ -44,7 +44,7 @@ export default async function RankingPage() {
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 0:
-        return <Trophy className="h-8 w-8 text-[#FFD700]" />
+        return <Trophy className="h-8 w-8 text-primary" />
       case 1:
         return <Medal className="h-8 w-8 text-gray-400" />
       case 2:
@@ -61,9 +61,9 @@ export default async function RankingPage() {
       case 1:
         return "bg-gradient-to-r from-gray-300 to-gray-500 text-black"
       case 2:
-        return "bg-gradient-to-r from-amber-600 to-amber-800 text-white"
+        return "bg-gradient-to-r from-amber-600 to-amber-800 text-foreground"
       default:
-        return "bg-white/10 text-white"
+        return "bg-muted text-foreground"
     }
   }
 
@@ -72,8 +72,8 @@ export default async function RankingPage() {
       <div>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Ranking</h1>
-            <p className="text-white/60">Classificação por participação e engajamento</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Ranking</h1>
+            <p className="text-muted-foreground">Classificação por participação e engajamento</p>
           </div>
           <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
             <Link href="/dashboard/ranking/activities">
@@ -85,59 +85,59 @@ export default async function RankingPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Sua Posição</CardTitle>
-            <TrendingUp className="h-4 w-4 text-[#FFD700]" />
+            <CardTitle className="text-sm font-medium text-foreground">Sua Posição</CardTitle>
+            <TrendingUp className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-[#FFD700]">#{userRank + 1}</div>
-            <p className="text-xs text-white/60 mt-1">de {allMembers?.length || 0} membros</p>
+            <div className="text-3xl font-bold text-primary">#{userRank + 1}</div>
+            <p className="text-xs text-muted-foreground mt-1">de {allMembers?.length || 0} membros</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Seus Pontos</CardTitle>
-            <Trophy className="h-4 w-4 text-[#FFD700]" />
+            <CardTitle className="text-sm font-medium text-foreground">Seus Pontos</CardTitle>
+            <Trophy className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{currentUser?.total_points || 0}</div>
-            <p className="text-xs text-white/60 mt-1">pontos totais</p>
+            <div className="text-3xl font-bold text-foreground">{currentUser?.total_points || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">pontos totais</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Diferença para o 1º</CardTitle>
-            <Award className="h-4 w-4 text-[#FFD700]" />
+            <CardTitle className="text-sm font-medium text-foreground">Diferença para o 1º</CardTitle>
+            <Award className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">
+            <div className="text-3xl font-bold text-foreground">
               {topThree[0] ? Math.max(0, (topThree[0].total_points || 0) - (currentUser?.total_points || 0)) : 0}
             </div>
-            <p className="text-xs text-white/60 mt-1">pontos de diferença</p>
+            <p className="text-xs text-muted-foreground mt-1">pontos de diferença</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold text-white mb-4">Top 3</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-4">Top 3</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {topThree.map((member, index) => (
               <Card
                 key={member.id}
                 className={`${getRankBadgeColor(index)} border-2 ${
-                  index === 0 ? "border-[#FFD700]" : "border-white/20"
+                  index === 0 ? "border-primary" : "border-border"
                 }`}
               >
                 <CardContent className="pt-6">
                   <div className="flex flex-col items-center text-center space-y-4">
                     <div className="relative">
-                      <Avatar className="h-24 w-24 border-4 border-white/20">
+                      <Avatar className="h-24 w-24 border-4 border-border">
                         <AvatarImage src={member.avatar_url || ""} alt={member.full_name} className="object-cover" />
-                        <AvatarFallback className="bg-white/20 text-2xl">
+                        <AvatarFallback className="bg-muted text-2xl">
                           {member.full_name
                             .split(" ")
                             .map((n: any) => n[0])
@@ -158,7 +158,7 @@ export default async function RankingPage() {
                       />
                     </div>
 
-                    <div className="w-full pt-4 border-t border-white/20">
+                    <div className="w-full pt-4 border-t border-border">
                       <p className="text-3xl font-bold">{member.total_points}</p>
                       <p className="text-sm opacity-80">pontos</p>
                     </div>
@@ -170,22 +170,22 @@ export default async function RankingPage() {
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold text-white mb-4">Classificação Geral</h2>
-          <Card className="bg-white/5 border-[#FFD700]/20">
+          <h2 className="text-2xl font-bold text-foreground mb-4">Classificação Geral</h2>
+          <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
             <CardContent className="p-0">
-              <div className="divide-y divide-white/10">
+              <div className="divide-y divide-border">
                 {restOfMembers.map((member, index) => {
                   const actualRank = index + 4
                   const isCurrentUser = member.id === user.id
                   return (
                     <div
                       key={member.id}
-                      className={`flex items-center justify-between p-4 hover:bg-white/5 transition-colors ${
-                        isCurrentUser ? "bg-[#FFD700]/10" : ""
+                      className={`flex items-center justify-between p-4 hover:bg-muted/50 transition-colors ${
+                        isCurrentUser ? "bg-primary/10" : ""
                       }`}
                     >
                       <div className="flex items-center gap-4 flex-1">
-                        <span className="text-2xl font-bold text-white/60 w-12 text-center">#{actualRank}</span>
+                        <span className="text-2xl font-bold text-muted-foreground w-12 text-center">#{actualRank}</span>
 
                         <Avatar className="h-12 w-12">
                           <AvatarImage src={member.avatar_url || ""} alt={member.full_name} className="object-cover" />
@@ -200,9 +200,9 @@ export default async function RankingPage() {
                         </Avatar>
 
                         <div className="flex-1">
-                          <p className="font-semibold text-white">
+                          <p className="font-semibold text-foreground">
                             {member.full_name}
-                            {isCurrentUser && <span className="ml-2 text-[#FFD700] text-sm">(Você)</span>}
+                            {isCurrentUser && <span className="ml-2 text-primary text-sm">(Você)</span>}
                           </p>
                           <RoleBadge 
                         boardRole={member.board_role}
@@ -213,8 +213,8 @@ export default async function RankingPage() {
                       </div>
 
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-[#FFD700]">{member.total_points}</p>
-                        <p className="text-xs text-white/60">pontos</p>
+                        <p className="text-2xl font-bold text-primary">{member.total_points}</p>
+                        <p className="text-xs text-muted-foreground">pontos</p>
                       </div>
                     </div>
                   )

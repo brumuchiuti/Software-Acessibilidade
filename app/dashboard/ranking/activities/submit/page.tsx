@@ -22,14 +22,14 @@ export default async function SubmitActivityPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Submeter Atividade</h1>
-        <p className="text-white/60">Registre suas atividades de engajamento para ganhar pontos</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Submeter Atividade</h1>
+        <p className="text-muted-foreground">Registre suas atividades de engajamento para ganhar pontos</p>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Formulário de Submissão</CardTitle>
-          <CardDescription className="text-white/60">
+          <CardTitle className="text-foreground">Formulário de Submissão</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Selecione uma atividade e forneça detalhes sobre sua participação
           </CardDescription>
         </CardHeader>

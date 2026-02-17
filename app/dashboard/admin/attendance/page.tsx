@@ -57,19 +57,19 @@ export default async function AttendancePage({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Marcar Presenças</h1>
-        <p className="text-white/60">Registre a presença dos membros nos eventos</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Marcar Presenças</h1>
+        <p className="text-muted-foreground">Registre a presença dos membros nos eventos</p>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Selecionar Evento</CardTitle>
-          <CardDescription className="text-white/60">Escolha o evento para marcar presenças</CardDescription>
+          <CardTitle className="text-foreground">Selecionar Evento</CardTitle>
+          <CardDescription className="text-muted-foreground">Escolha o evento para marcar presenças</CardDescription>
         </CardHeader>
         <CardContent>
           <form action="/dashboard/admin/attendance" method="get">
             <Select name="event" defaultValue={selectedEventId}>
-              <SelectTrigger className="bg-white/5 border-white/10 text-white">
+              <SelectTrigger className="bg-input border-border text-foreground">
                 <SelectValue placeholder="Selecione um evento" />
               </SelectTrigger>
               <SelectContent>
@@ -90,10 +90,10 @@ export default async function AttendancePage({
       </Card>
 
       {selectedEvent && attendees && (
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader>
-            <CardTitle className="text-white">{selectedEvent.title}</CardTitle>
-            <CardDescription className="text-white/60">
+            <CardTitle className="text-foreground">{selectedEvent.title}</CardTitle>
+            <CardDescription className="text-muted-foreground">
               {new Date(selectedEvent.event_date).toLocaleDateString("pt-BR", {
                 day: "2-digit",
                 month: "long",

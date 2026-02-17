@@ -37,14 +37,14 @@ export default async function EditActivityPage({ params }: EditActivityPageProps
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Editar Atividade</h1>
-        <p className="text-white/60">Atualize as informações da atividade</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Editar Atividade</h1>
+        <p className="text-muted-foreground">Atualize as informações da atividade</p>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Informações da Atividade</CardTitle>
-          <CardDescription className="text-white/60">
+          <CardTitle className="text-foreground">Informações da Atividade</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Todos os campos são obrigatórios exceto quando indicado
           </CardDescription>
         </CardHeader>

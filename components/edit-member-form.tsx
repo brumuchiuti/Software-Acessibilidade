@@ -40,6 +40,7 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     full_name: member.full_name,
+    role: member.role || "none",
     board_role: member.board_role || "none",
     development_level: member.development_level || "qualify",
     institute_areas: member.member_institute_areas?.map(area => area.area) || [],
@@ -59,6 +60,7 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
 
       // Update profile information
       const updateData: any = {
+        role: formData.role === "none" ? null : formData.role,
         board_role: formData.board_role === "none" ? null : formData.board_role,
         development_level: formData.development_level,
       }
@@ -113,6 +115,13 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
     }
   }
 
+  const roleOptions = [
+    { value: "none", label: "Nenhum" },
+    { value: "presidente", label: "Presidente" },
+    { value: "vice_presidente", label: "Vice-Presidente" },
+    { value: "diretor", label: "Diretor" },
+  ]
+
   const boardRoleOptions = [
     { value: "none", label: "Não é membro da diretoria" },
     { value: "presidente", label: "Presidente" },
@@ -161,44 +170,66 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="full_name" className="text-white">
+        <Label htmlFor="full_name" className="text-foreground">
           Nome Completo *
         </Label>
         <Input
           id="full_name"
           value={formData.full_name}
           onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-          className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+          className="bg-input border-border text-foreground placeholder:text-muted-foreground"
           required
           disabled={!isCurrentUser}
         />
         {!isCurrentUser && (
-          <p className="text-xs text-white/60">Apenas o próprio membro pode alterar informações pessoais</p>
+          <p className="text-xs text-muted-foreground">Apenas o próprio membro pode alterar informações pessoais</p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-white">
+        <Label htmlFor="email" className="text-foreground">
           Email
         </Label>
         <Input
           id="email"
           value={member.email}
           disabled
-          className="bg-white/5 border-white/10 text-white/60"
+          className="bg-input border-border text-muted-foreground"
         />
-        <p className="text-xs text-white/60">Email não pode ser alterado</p>
+        <p className="text-xs text-muted-foreground">Email não pode ser alterado</p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="board_role" className="text-white">
+        <Label htmlFor="role" className="text-foreground">
+          Função
+        </Label>
+        <Select
+          value={formData.role}
+          onValueChange={(value) => setFormData({ ...formData, role: value })}
+        >
+          <SelectTrigger className="bg-input border-border text-foreground">
+            <SelectValue placeholder="Selecione a função" />
+          </SelectTrigger>
+          <SelectContent>
+            {roleOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">Função administrativa do membro</p>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="board_role" className="text-foreground">
           Cargo na Diretoria
         </Label>
         <Select
           value={formData.board_role}
           onValueChange={(value) => setFormData({ ...formData, board_role: value })}
         >
-          <SelectTrigger className="bg-white/5 border-white/10 text-white">
+          <SelectTrigger className="bg-input border-border text-foreground">
             <SelectValue placeholder="Selecione o cargo na diretoria" />
           </SelectTrigger>
           <SelectContent>
@@ -209,18 +240,18 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
             ))}
           </SelectContent>
         </Select>
-        <p className="text-xs text-white/60">Apenas membros da diretoria têm acesso ao painel administrativo</p>
+        <p className="text-xs text-muted-foreground">Apenas membros da diretoria têm acesso ao painel administrativo</p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="development_level" className="text-white">
+        <Label htmlFor="development_level" className="text-foreground">
           Nível de Desenvolvimento *
         </Label>
         <Select
           value={formData.development_level}
           onValueChange={(value) => setFormData({ ...formData, development_level: value })}
         >
-          <SelectTrigger className="bg-white/5 border-white/10 text-white">
+          <SelectTrigger className="bg-input border-border text-foreground">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -234,7 +265,7 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
       </div>
 
       <div className="space-y-2">
-        <Label className="text-white">
+        <Label className="text-foreground">
           Áreas do Instituto
         </Label>
         <div className="grid grid-cols-2 gap-3">
@@ -244,18 +275,18 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
                 id={option.value}
                 checked={formData.institute_areas.includes(option.value)}
                 onCheckedChange={(checked) => handleAreaChange(option.value, checked as boolean)}
-                className="border-white/20"
+                className="border-border"
               />
               <Label
                 htmlFor={option.value}
-                className="text-sm text-white/80 cursor-pointer"
+                className="text-sm text-muted-foreground cursor-pointer"
               >
                 {option.label}
               </Label>
             </div>
           ))}
         </div>
-        <p className="text-xs text-white/60">Selecione uma ou mais áreas que o membro participa</p>
+        <p className="text-xs text-muted-foreground">Selecione uma ou mais áreas que o membro participa</p>
       </div>
 
       {!isCurrentUser && (
@@ -279,7 +310,7 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
           type="button"
           variant="outline"
           onClick={() => router.back()}
-          className="flex-1 border-white/10 text-white hover:bg-white/5"
+          className="flex-1 border-border text-foreground hover:bg-muted/50"
           disabled={loading}
         >
           Cancelar

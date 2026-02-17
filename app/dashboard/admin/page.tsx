@@ -41,65 +41,65 @@ export default async function AdminPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-2">Painel Administrativo</h1>
-          <p className="text-white/60">Gerencie eventos, membros e atividades</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Painel Administrativo</h1>
+          <p className="text-muted-foreground">Gerencie eventos, membros e atividades</p>
         </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Total de Eventos</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Total de Eventos</CardTitle>
             <Calendar className="h-4 w-4 text-[#FFD700]" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{totalEvents?.length || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Eventos criados</p>
+            <div className="text-3xl font-bold text-foreground">{totalEvents?.length || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Eventos criados</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Próximos Eventos</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Próximos Eventos</CardTitle>
             <Calendar className="h-4 w-4 text-[#FFD700]" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-[#FFD700]">{upcomingEvents?.length || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Agendados</p>
+            <p className="text-xs text-muted-foreground mt-1">Agendados</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Total de Membros</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Total de Membros</CardTitle>
             <Users className="h-4 w-4 text-[#FFD700]" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{totalMembers?.length || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Membros ativos</p>
+            <div className="text-3xl font-bold text-foreground">{totalMembers?.length || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Membros ativos</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Presenças (7 dias)</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Presenças (7 dias)</CardTitle>
             <Activity className="h-4 w-4 text-[#FFD700]" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{recentAttendance?.length || 0}</div>
-            <p className="text-xs text-white/60 mt-1">Registros recentes</p>
+            <div className="text-3xl font-bold text-foreground">{recentAttendance?.length || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Registros recentes</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-foreground flex items-center gap-2">
               <Calendar className="h-5 w-5 text-[#FFD700]" />
               Gerenciar Eventos
             </CardTitle>
-            <CardDescription className="text-white/60">Criar, editar e gerenciar eventos</CardDescription>
+            <CardDescription className="text-muted-foreground">Criar, editar e gerenciar eventos</CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
@@ -111,13 +111,13 @@ export default async function AdminPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-foreground flex items-center gap-2">
               <Users className="h-5 w-5 text-[#FFD700]" />
               Gerenciar Membros
             </CardTitle>
-            <CardDescription className="text-white/60">Atualizar funções e informações</CardDescription>
+            <CardDescription className="text-muted-foreground">Atualizar funções e informações</CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
@@ -129,13 +129,13 @@ export default async function AdminPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-foreground flex items-center gap-2">
               <Activity className="h-5 w-5 text-[#FFD700]" />
               Marcar Presenças
             </CardTitle>
-            <CardDescription className="text-white/60">Registrar presença em eventos</CardDescription>
+            <CardDescription className="text-muted-foreground">Registrar presença em eventos</CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
@@ -147,13 +147,13 @@ export default async function AdminPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-foreground flex items-center gap-2">
               <Activity className="h-5 w-5 text-[#FFD700]" />
               Gerenciar Atividades
             </CardTitle>
-            <CardDescription className="text-white/60">Criar atividades e aprovar submissões</CardDescription>
+            <CardDescription className="text-muted-foreground">Criar atividades e aprovar submissões</CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full bg-[#FFD700] text-black hover:bg-[#FFD700]/90">

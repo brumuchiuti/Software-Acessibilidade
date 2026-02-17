@@ -84,13 +84,13 @@ export function GoogleCalendarStatus({
 
   if (!hasGoogleCalendarIntegration) {
     return (
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-foreground flex items-center gap-2">
             <Calendar className="h-5 w-5 text-[#FFD700]" />
             Google Calendar Integration
           </CardTitle>
-          <CardDescription className="text-white/60">
+          <CardDescription className="text-muted-foreground">
             Create a Google Calendar event and invite all users
           </CardDescription>
         </CardHeader>
@@ -100,7 +100,7 @@ export function GoogleCalendarStatus({
               <Badge variant="outline" className="border-red-500 text-red-500">
                 Not Connected
               </Badge>
-              <span className="text-white/60 text-sm">
+              <span className="text-muted-foreground text-sm">
                 No Google Calendar event created yet
               </span>
             </div>
@@ -131,13 +131,13 @@ export function GoogleCalendarStatus({
   }
 
   return (
-    <Card className="bg-white/5 border-[#FFD700]/20">
+    <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-foreground flex items-center gap-2">
           <Calendar className="h-5 w-5 text-[#FFD700]" />
           Google Calendar Integration
         </CardTitle>
-        <CardDescription className="text-white/60">
+        <CardDescription className="text-muted-foreground">
           Google Calendar event is active and users have been invited
         </CardDescription>
       </CardHeader>
@@ -147,17 +147,17 @@ export function GoogleCalendarStatus({
             <Badge className="bg-green-600 hover:bg-green-700">
               Connected
             </Badge>
-            <span className="text-white/60 text-sm">
+            <span className="text-muted-foreground text-sm">
               Event ID: {googleCalendarEventId}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-white/60 text-sm">
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
             <Users className="h-4 w-4" />
             <span>All users have been invited via email</span>
           </div>
 
-          <div className="flex items-center gap-2 text-white/60 text-sm">
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
             <Mail className="h-4 w-4" />
             <span>Email reminders: 1 day & 1 hour before event</span>
           </div>
@@ -166,7 +166,7 @@ export function GoogleCalendarStatus({
             <Button
               onClick={() => window.open(`https://calendar.google.com/event?eid=${googleCalendarEventId}`, '_blank')}
               variant="outline"
-              className="flex-1 border-white/20 text-white bg-transparent hover:bg-white/5"
+              className="flex-1 border-border text-foreground bg-transparent hover:bg-muted/50"
             >
               <ExternalLink className="h-4 w-4 mr-2" />
               View in Calendar

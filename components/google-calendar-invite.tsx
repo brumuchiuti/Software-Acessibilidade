@@ -41,13 +41,13 @@ export function GoogleCalendarInvite({
 
   if (!calendarUrl) {
     return (
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-foreground flex items-center gap-2">
             <Calendar className="h-5 w-5 text-[#FFD700]" />
             Google Calendar Invitation
           </CardTitle>
-          <CardDescription className="text-white/60">
+          <CardDescription className="text-muted-foreground">
             Generate a calendar invitation with all members as guests
           </CardDescription>
         </CardHeader>
@@ -57,12 +57,12 @@ export function GoogleCalendarInvite({
               <Badge variant="outline" className="border-orange-500 text-orange-500">
                 Not Generated
               </Badge>
-              <span className="text-white/60 text-sm">
+              <span className="text-muted-foreground text-sm">
                 Calendar invitation not yet created
               </span>
             </div>
             
-            <div className="text-sm text-white/60">
+            <div className="text-sm text-muted-foreground">
               <p>When you create an event, a Google Calendar invitation will be generated that includes:</p>
               <ul className="list-disc list-inside mt-2 space-y-1">
                 <li>All organization members as attendees</li>
@@ -77,13 +77,13 @@ export function GoogleCalendarInvite({
   }
 
   return (
-    <Card className="bg-white/5 border-[#FFD700]/20">
+    <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-foreground flex items-center gap-2">
           <Calendar className="h-5 w-5 text-[#FFD700]" />
           Google Calendar Invitation
         </CardTitle>
-        <CardDescription className="text-white/60">
+        <CardDescription className="text-muted-foreground">
           Calendar invitation ready with all members as guests
         </CardDescription>
       </CardHeader>
@@ -93,28 +93,28 @@ export function GoogleCalendarInvite({
             <Badge className="bg-green-600 hover:bg-green-700">
               Ready
             </Badge>
-            <span className="text-white/60 text-sm">
+            <span className="text-muted-foreground text-sm">
               Invitation generated successfully
             </span>
           </div>
 
           {organizerEmail && (
-            <div className="flex items-center gap-2 text-white/60 text-sm">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <Mail className="h-4 w-4" />
               <span>Organizer: {organizerEmail}</span>
             </div>
           )}
 
           {attendeeCount > 0 && (
-            <div className="flex items-center gap-2 text-white/60 text-sm">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <Users className="h-4 w-4" />
               <span>{attendeeCount} members will be invited</span>
             </div>
           )}
 
           <div className="space-y-2">
-            <div className="text-sm text-white/80 font-medium">Instructions:</div>
-            <ol className="text-sm text-white/60 space-y-1 list-decimal list-inside">
+            <div className="text-sm text-muted-foreground font-medium">Instructions:</div>
+            <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
               <li>Click "Open Google Calendar" below</li>
               <li>Review the event details and attendees</li>
               <li>Click "Save" to create the event</li>
@@ -134,7 +134,7 @@ export function GoogleCalendarInvite({
             <Button
               onClick={handleCopyUrl}
               variant="outline"
-              className="border-white/20 text-white bg-transparent hover:bg-white/5"
+              className="border-border text-foreground bg-transparent hover:bg-muted/50"
             >
               {copied ? (
                 <Check className="h-4 w-4" />
@@ -150,7 +150,7 @@ export function GoogleCalendarInvite({
             </div>
           )}
 
-          <div className="text-xs text-white/50 text-center">
+          <div className="text-xs text-muted-foreground text-center">
             The event organizer will receive the calendar invitation and can manage attendees
           </div>
         </div>

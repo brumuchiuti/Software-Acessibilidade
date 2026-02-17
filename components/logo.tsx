@@ -1,14 +1,33 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
 
 interface LogoProps {
   className?: string
   href?: string
   size?: "sm" | "md" | "lg"
   showText?: boolean
+  /** Optional class for the text wrapper - useful for hiding in collapsed sidebars */
+  textClassName?: string
 }
 
-export function Logo({ className = "", href = "/dashboard", size = "md", showText = false }: LogoProps) {
+export function Logo({ className = "", href = "/dashboard", size = "md", showText = false, textClassName = "" }: LogoProps) {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const logoSrc = !mounted
+    ? "/logo-ifl-jovem-sp-square.png"
+    : resolvedTheme === "dark"
+      ? "/logo-dark.png"
+      : "/logo-light.png"
+
   const sizeClasses = {
     sm: "h-8 w-8",
     md: "h-12 w-12", 
@@ -28,7 +47,7 @@ export function Logo({ className = "", href = "/dashboard", size = "md", showTex
     <div className={`flex items-center gap-3 ${className}`}>
       <div className={`${sizeClasses[size]} relative`}>
         <Image
-          src="/logo-ifl-jovem-sp-square.png"
+          src={logoSrc}
           alt="IFL Jovem SP Logo"
           fill
           className="object-contain"
@@ -36,9 +55,9 @@ export function Logo({ className = "", href = "/dashboard", size = "md", showTex
         />
       </div>
       {showText && (
-        <div className="flex flex-col">
-          <span className={`${textSizeClasses[size]} font-bold text-[#FFD700]`}>IFL Jovem SP</span>
-          <span className="text-xs text-white/60">Instituto de Formação de Líderes</span>
+        <div className={`flex flex-col shrink-0 min-w-0 ${textClassName}`}>
+          <span className={`${textSizeClasses[size]} font-bold text-sidebar-primary truncate`}>IFL Jovem SP</span>
+          <span className="text-xs text-sidebar-foreground/60 truncate">Instituto de Formação de Líderes</span>
         </div>
       )}
     </div>

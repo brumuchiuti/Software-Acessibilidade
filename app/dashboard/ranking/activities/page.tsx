@@ -44,8 +44,8 @@ export default async function ActivitiesPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-2">Minhas Atividades</h1>
-          <p className="text-white/60">Submeta e acompanhe suas atividades de engajamento</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Minhas Atividades</h1>
+          <p className="text-muted-foreground">Submeta e acompanhe suas atividades de engajamento</p>
         </div>
         <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
           <Link href="/dashboard/ranking/activities/submit">
@@ -56,49 +56,49 @@ export default async function ActivitiesPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Pendentes</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Pendentes</CardTitle>
             <Clock className="h-4 w-4 text-yellow-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{pendingCount}</div>
-            <p className="text-xs text-white/60 mt-1">Aguardando aprovação</p>
+            <div className="text-3xl font-bold text-foreground">{pendingCount}</div>
+            <p className="text-xs text-muted-foreground mt-1">Aguardando aprovação</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Aprovadas</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Aprovadas</CardTitle>
             <CheckCircle className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-[#FFD700]">{approvedCount}</div>
-            <p className="text-xs text-white/60 mt-1">Atividades concluídas</p>
+            <p className="text-xs text-muted-foreground mt-1">Atividades concluídas</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 border-[#FFD700]/20">
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-white">Pontos Ganhos</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Pontos Ganhos</CardTitle>
             <CheckCircle className="h-4 w-4 text-[#FFD700]" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{totalPoints}</div>
-            <p className="text-xs text-white/60 mt-1">De atividades</p>
+            <div className="text-3xl font-bold text-foreground">{totalPoints}</div>
+            <p className="text-xs text-muted-foreground mt-1">De atividades</p>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="bg-white/5 border-[#FFD700]/20">
+      <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-white">Histórico de Atividades</CardTitle>
-          <CardDescription className="text-white/60">Todas as suas atividades submetidas</CardDescription>
+          <CardTitle className="text-foreground">Histórico de Atividades</CardTitle>
+          <CardDescription className="text-muted-foreground">Todas as suas atividades submetidas</CardDescription>
         </CardHeader>
         <CardContent>
           {!participations || participations.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-white/60 mb-4">Você ainda não submeteu nenhuma atividade</p>
+              <p className="text-muted-foreground mb-4">Você ainda não submeteu nenhuma atividade</p>
               <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
                 <Link href="/dashboard/ranking/activities/submit">
                   <Plus className="mr-2 h-4 w-4" />
@@ -115,22 +115,22 @@ export default async function ActivitiesPage() {
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-semibold text-white">{participation.activities.title}</h3>
+                      <h3 className="text-lg font-semibold text-foreground">{participation.activities.title}</h3>
                       {participation.completed ? (
                         <CheckCircle className="h-5 w-5 text-green-500" />
                       ) : (
                         <Clock className="h-5 w-5 text-yellow-500" />
                       )}
                     </div>
-                    <p className="text-white/60 text-sm mb-2">{participation.activities.description}</p>
+                    <p className="text-muted-foreground text-sm mb-2">{participation.activities.description}</p>
                     <div className="flex items-center gap-4 text-sm">
-                      <span className="text-white/60">
-                        Tipo: <span className="text-white">{participation.activities.activity_type}</span>
+                      <span className="text-muted-foreground">
+                        Tipo: <span className="text-foreground">{participation.activities.activity_type}</span>
                       </span>
-                      <span className="text-white/60">
+                      <span className="text-muted-foreground">
                         Pontos: <span className="text-[#FFD700]">{participation.activities.points_value}</span>
                       </span>
-                      <span className="text-white/60">
+                      <span className="text-muted-foreground">
                         Status:{" "}
                         <span className={participation.completed ? "text-green-500" : "text-yellow-500"}>
                           {participation.completed ? "Aprovada" : "Pendente"}
@@ -138,13 +138,13 @@ export default async function ActivitiesPage() {
                       </span>
                     </div>
                     {participation.notes && (
-                      <p className="text-white/60 text-sm mt-2 italic">Nota: {participation.notes}</p>
+                      <p className="text-muted-foreground text-sm mt-2 italic">Nota: {participation.notes}</p>
                     )}
                   </div>
                   {participation.completed && (
                     <div className="text-right">
                       <div className="text-2xl font-bold text-[#FFD700]">+{participation.points_earned}</div>
-                      <div className="text-xs text-white/60">pontos</div>
+                      <div className="text-xs text-muted-foreground">pontos</div>
                     </div>
                   )}
                 </div>

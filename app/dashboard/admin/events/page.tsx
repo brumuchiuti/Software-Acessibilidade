@@ -42,8 +42,8 @@ export default async function AdminEventsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-2">Gerenciar Eventos</h1>
-          <p className="text-white/60">Criar e gerenciar eventos da organização</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Gerenciar Eventos</h1>
+          <p className="text-muted-foreground">Criar e gerenciar eventos da organização</p>
         </div>
         <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
           <Link href="/dashboard/admin/events/create">
@@ -56,15 +56,15 @@ export default async function AdminEventsPage() {
       <div className="space-y-4">
         {allEvents && allEvents.length > 0 ? (
           allEvents.map((event) => (
-            <Card key={event.id} className="bg-white/5 border-[#FFD700]/20">
+            <Card key={event.id} className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-white">{event.title}</h3>
+                      <h3 className="text-lg font-semibold text-foreground">{event.title}</h3>
                       {getStatusBadge(event.status)}
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-white/60">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {new Date(event.event_date).toLocaleDateString("pt-BR", {
@@ -81,7 +81,7 @@ export default async function AdminEventsPage() {
                           {event.location}
                         </span>
                       )}
-                      <span className="text-[#FFD700]">{event.points_value} pontos</span>
+                      <span className="text-primary">{event.points_value} pontos</span>
                       {event.google_calendar_event_id && (
                         <span className="flex items-center gap-1 text-green-400">
                           <Mail className="h-3 w-3" />
@@ -95,7 +95,7 @@ export default async function AdminEventsPage() {
                       asChild
                       size="sm"
                       variant="outline"
-                      className="border-[#FFD700]/40 text-[#FFD700] bg-transparent"
+                      className="border-[#FFD700]/40 text-primary bg-transparent"
                     >
                       <Link href={`/dashboard/admin/events/${event.id}/edit`}>Editar</Link>
                     </Button>
@@ -119,9 +119,9 @@ export default async function AdminEventsPage() {
             </Card>
           ))
         ) : (
-          <Card className="bg-white/5 border-[#FFD700]/20">
+          <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
             <CardContent className="py-12 text-center">
-              <p className="text-white/60 mb-4">Nenhum evento criado ainda.</p>
+              <p className="text-muted-foreground mb-4">Nenhum evento criado ainda.</p>
               <Button asChild className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
                 <Link href="/dashboard/admin/events/create">
                   <Plus className="mr-2 h-4 w-4" />

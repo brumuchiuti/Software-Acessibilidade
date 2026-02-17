@@ -44,14 +44,14 @@ export function RoleBadge({ boardRole, developmentLevel, instituteAreas }: RoleB
     diretor_institucional: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
     diretor_financeiro: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
     diretor_forum: "bg-[#003366] text-[#FFD700] hover:bg-[#003366]/90",
-    conselheiro: "bg-purple-600 text-white hover:bg-purple-700",
+    conselheiro: "bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-600 dark:text-white",
   }
 
   const developmentLevelColors: Record<string, string> = {
     qualify: "bg-gray-500 text-white hover:bg-gray-600",
-    associado_i: "bg-white/10 text-white hover:bg-white/20",
-    associado_ii: "bg-white/20 text-white hover:bg-white/30",
-    associado_senior: "bg-white/30 text-white hover:bg-white/40",
+    associado_i: "bg-muted text-foreground hover:bg-muted/80",
+    associado_ii: "bg-muted text-foreground hover:bg-muted/80",
+    associado_senior: "bg-muted text-foreground hover:bg-muted/80",
   }
 
   return (
@@ -67,7 +67,7 @@ export function RoleBadge({ boardRole, developmentLevel, instituteAreas }: RoleB
         </Badge>
       )}
       {instituteAreas && instituteAreas.length > 0 && (
-        <Badge className="bg-blue-600 text-white hover:bg-blue-700">
+        <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
           {instituteAreas.map(area => instituteAreaLabels[area.area] || area.area).join(", ")}
         </Badge>
       )}
