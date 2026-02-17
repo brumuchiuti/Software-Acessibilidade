@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { Home, Calendar, Trophy, Users, Settings, LogOut } from "lucide-react"
+import { Home, Calendar, Trophy, Users, Settings, LogOut, GraduationCap } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -56,6 +56,7 @@ export function DashboardSidebar({ user, children }: DashboardSidebarProps) {
     { href: "/dashboard", label: "Início", icon: Home },
     { href: "/dashboard/events", label: "Eventos", icon: Calendar },
     { href: "/dashboard/ranking", label: "Ranking", icon: Trophy },
+    { href: "/dashboard/ciclo-formacao", label: "Ciclo de Formação", icon: GraduationCap },
     { href: "/dashboard/members", label: "Membros", icon: Users },
   ]
 
@@ -81,7 +82,7 @@ export function DashboardSidebar({ user, children }: DashboardSidebarProps) {
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
                         <Link href={item.href}>
-                          <Icon className="h-4 w-4" />
+                          <Icon className="h-4 w-4 flex items-center justify-center" />
                           <span>{item.label}</span>
                         </Link>
                       </SidebarMenuButton>

@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Calendar, Users, Activity, Plus } from "lucide-react"
+import { Calendar, Users, Activity, Plus, GraduationCap } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminPage() {
@@ -142,6 +142,24 @@ export default async function AdminPage() {
               <Link href="/dashboard/admin/attendance">
                 <Plus className="mr-2 h-4 w-4" />
                 Acessar Presenças
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors">
+          <CardHeader>
+            <CardTitle className="text-foreground flex items-center gap-2">
+              <GraduationCap className="h-5 w-5 text-[#FFD700]" />
+              Ciclo de Formação
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">Criar tarefas por nível de desenvolvimento</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+              <Link href="/dashboard/admin/ciclo-formacao">
+                <Plus className="mr-2 h-4 w-4" />
+                Acessar Ciclo
               </Link>
             </Button>
           </CardContent>
