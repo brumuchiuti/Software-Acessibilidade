@@ -13,6 +13,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useRef } from "react"
 import { Logo } from "@/components/logo"
+import { formatPhoneInput, normalizePhoneForStorage } from "@/lib/phone"
 import { Upload, User, Linkedin, Instagram, Phone, FileText } from "lucide-react"
 
 export default function SignUpPage() {
@@ -35,7 +36,8 @@ export default function SignUpPage() {
   const router = useRouter()
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    const formatted = field === "phone" ? formatPhoneInput(value) : value
+    setFormData(prev => ({ ...prev, [field]: formatted }))
   }
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +121,7 @@ export default function SignUpPage() {
           .update({
             bio: formData.bio,
             description: formData.description,
-            phone: formData.phone,
+            phone: normalizePhoneForStorage(formData.phone),
             linkedin_url: formData.linkedin,
             instagram_url: formData.instagram,
             avatar_url: avatarUrl,
@@ -222,7 +224,7 @@ export default function SignUpPage() {
                         <Input
                           id="phone"
                           type="tel"
-                          placeholder="(11) 99999-9999"
+                          placeholder="+55 (11) 98765-4321"
                           className="pl-10"
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}

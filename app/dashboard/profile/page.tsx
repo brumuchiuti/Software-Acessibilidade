@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Mail, Phone, Calendar, Trophy, Linkedin, Instagram, Edit } from "lucide-react"
 import Link from "next/link"
+import { formatPhoneForDisplay } from "@/lib/phone"
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -93,7 +94,7 @@ export default async function ProfilePage() {
               {profile?.phone && (
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <Phone className="h-4 w-4 text-[#FFD700]" />
-                  <span className="text-sm">{profile.phone}</span>
+                  <span className="text-sm">{formatPhoneForDisplay(profile.phone)}</span>
                 </div>
               )}
               <div className="flex items-center gap-3 text-muted-foreground">

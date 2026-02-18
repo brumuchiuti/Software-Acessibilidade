@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { createClient } from "@/lib/supabase/client"
+import { formatPhoneForDisplay, formatPhoneInput, normalizePhoneForStorage } from "@/lib/phone"
 
 interface Member {
   id: string
@@ -45,7 +46,7 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
     development_level: member.development_level || "qualify",
     institute_areas: member.member_institute_areas?.map(area => area.area) || [],
     bio: member.bio || "",
-    phone: member.phone || "",
+    phone: formatPhoneForDisplay(member.phone) || "",
     linkedin_url: member.linkedin_url || "",
     instagram_url: member.instagram_url || "",
     description: member.description || "",
@@ -69,7 +70,7 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
       if (isCurrentUser) {
         updateData.full_name = formData.full_name
         updateData.bio = formData.bio || null
-        updateData.phone = formData.phone || null
+        updateData.phone = normalizePhoneForStorage(formData.phone) || null
         updateData.linkedin_url = formData.linkedin_url || null
         updateData.instagram_url = formData.instagram_url || null
         updateData.description = formData.description || null
@@ -198,6 +199,21 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
         />
         <p className="text-xs text-muted-foreground">Email não pode ser alterado</p>
       </div>
+
+      {isCurrentUser && (
+        <div className="space-y-2">
+          <Label htmlFor="phone" className="text-foreground">
+            Telefone
+          </Label>
+          <Input
+            id="phone"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: formatPhoneInput(e.target.value) })}
+            placeholder="+55 (11) 98765-4321"
+            className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label htmlFor="role" className="text-foreground">

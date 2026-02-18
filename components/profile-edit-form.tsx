@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/client"
+import { formatPhoneForDisplay, formatPhoneInput, normalizePhoneForStorage } from "@/lib/phone"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Linkedin, Instagram, User, Mail, Phone } from "lucide-react"
 
@@ -86,7 +87,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
       const { error } = await supabase.from("profiles").update({
         full_name: formData.get("full_name") as string,
         bio: formData.get("bio") as string || null,
-        phone: formData.get("phone") as string || null,
+        phone: normalizePhoneForStorage(formData.get("phone") as string),
         avatar_url: avatarUrl,
         linkedin_url: formData.get("linkedin_url") as string || null,
         instagram_url: formData.get("instagram_url") as string || null,
@@ -109,11 +110,11 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
-        <Label className="text-white">Foto de Perfil</Label>
+        <Label className="text-foreground">Foto de Perfil</Label>
         <div className="flex items-center gap-4">
           <Avatar className="h-20 w-20">
             <AvatarImage src={imagePreview || ""} alt={profile.full_name} className="object-cover" />
-            <AvatarFallback className="bg-[#FFD700] text-black text-xl">
+            <AvatarFallback className="bg-primary text-primary-foreground text-xl">
               {profile.full_name
                 .split(" ")
                 .map((n) => n[0])
@@ -128,15 +129,15 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="bg-white/5 border-white/10 text-white file:bg-[#FFD700] file:text-black file:border-0 file:rounded file:px-4 file:py-2 file:mr-4"
+              className="file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-2 file:mr-4"
             />
-            <p className="text-xs text-white/60 mt-1">Formatos aceitos: JPG, PNG, GIF (máx. 5MB)</p>
+            <p className="text-xs text-muted-foreground mt-1">Formatos aceitos: JPG, PNG, GIF (máx. 5MB)</p>
           </div>
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="full_name" className="text-white">
+        <Label htmlFor="full_name" className="text-foreground">
           Nome Completo *
         </Label>
         <Input
@@ -144,12 +145,11 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
           name="full_name"
           defaultValue={profile.full_name}
           required
-          className="bg-white/5 border-white/10 text-white"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="bio" className="text-white">
+        <Label htmlFor="bio" className="text-foreground">
           Bio (Breve descrição)
         </Label>
         <Textarea
@@ -158,12 +158,11 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
           defaultValue={profile.bio || ""}
           rows={3}
           placeholder="Uma breve descrição sobre você..."
-          className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description" className="text-white">
+        <Label htmlFor="description" className="text-foreground">
           Descrição Detalhada
         </Label>
         <Textarea
@@ -172,43 +171,44 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
           defaultValue={profile.description || ""}
           rows={4}
           placeholder="Conte mais sobre você, seus interesses, experiência profissional..."
-          className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="phone" className="text-white">
+          <Label htmlFor="phone" className="text-foreground">
             Telefone
           </Label>
           <Input
             id="phone"
             name="phone"
             type="tel"
-            defaultValue={profile.phone || ""}
-            placeholder="(11) 99999-9999"
-            className="bg-white/5 border-white/10 text-white"
+            defaultValue={formatPhoneForDisplay(profile.phone)}
+            placeholder="+55 (11) 98765-4321"
+            onChange={(e) => {
+              e.target.value = formatPhoneInput(e.target.value)
+            }}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-white">
+          <Label htmlFor="email" className="text-foreground">
             Email (somente leitura)
           </Label>
           <Input
             id="email"
             value={profile.email}
             disabled
-            className="bg-white/5 border-white/10 text-white/60"
+            className="opacity-70"
           />
         </div>
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-white">Redes Sociais</h3>
+        <h3 className="text-lg font-semibold text-foreground">Redes Sociais</h3>
         
         <div className="space-y-2">
-          <Label htmlFor="linkedin_url" className="text-white flex items-center gap-2">
+          <Label htmlFor="linkedin_url" className="text-foreground flex items-center gap-2">
             <Linkedin className="h-4 w-4" />
             LinkedIn
           </Label>
@@ -218,12 +218,11 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
             type="url"
             defaultValue={profile.linkedin_url || ""}
             placeholder="https://linkedin.com/in/seu-perfil"
-            className="bg-white/5 border-white/10 text-white"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="instagram_url" className="text-white flex items-center gap-2">
+          <Label htmlFor="instagram_url" className="text-foreground flex items-center gap-2">
             <Instagram className="h-4 w-4" />
             Instagram
           </Label>
@@ -233,23 +232,22 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
             type="url"
             defaultValue={profile.instagram_url || ""}
             placeholder="https://instagram.com/seu-perfil"
-            className="bg-white/5 border-white/10 text-white"
           />
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
 
       <div className="flex gap-4">
         <Button
           type="button"
           variant="outline"
-          className="flex-1 border-white/20 text-white bg-transparent"
+          className="flex-1"
           onClick={() => router.back()}
         >
           Cancelar
         </Button>
-        <Button type="submit" disabled={loading} className="flex-1 bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+        <Button type="submit" disabled={loading} className="flex-1">
           {loading ? "Salvando..." : "Salvar Alterações"}
         </Button>
       </div>

@@ -446,7 +446,11 @@ function SidebarGroupContent({
     <div
       data-slot="sidebar-group-content"
       data-sidebar="group-content"
-      className={cn('w-full text-sm', className)}
+      className={cn(
+        'w-full text-sm',
+        'group-data-[collapsible=icon]/sidebar-inner:w-auto group-data-[collapsible=icon]/sidebar-inner:flex group-data-[collapsible=icon]/sidebar-inner:justify-center',
+        className
+      )}
       {...props}
     />
   )
@@ -459,7 +463,7 @@ function SidebarMenu({ className, ...props }: React.ComponentProps<'ul'>) {
       data-sidebar="menu"
       className={cn(
         'flex w-full min-w-0 flex-col gap-1',
-        'group-data-[collapsible=icon]/sidebar-inner:items-center',
+        'group-data-[collapsible=icon]/sidebar-inner:w-auto group-data-[collapsible=icon]/sidebar-inner:items-center',
         className
       )}
       {...props}
@@ -474,7 +478,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
       data-sidebar="menu-item"
       className={cn(
         'group/menu-item relative w-full',
-        'group-data-[collapsible=icon]/sidebar-inner:flex group-data-[collapsible=icon]/sidebar-inner:justify-center',
+        'group-data-[collapsible=icon]/sidebar-inner:flex group-data-[collapsible=icon]/sidebar-inner:w-auto group-data-[collapsible=icon]/sidebar-inner:justify-center',
         className
       )}
       {...props}

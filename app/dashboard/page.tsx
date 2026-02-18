@@ -1,7 +1,10 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { RoleBadge } from "@/components/role-badge"
-import { Calendar, Trophy, Users, TrendingUp } from "lucide-react"
+import { Calendar, Trophy, Users, TrendingUp, UserCircle, ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -59,8 +62,30 @@ export default async function DashboardPage() {
         .gt("total_points", profile?.total_points || 0)
     ).data?.length || 0
 
+  const isProfileIncomplete =
+    !profile?.phone ||
+    !profile?.bio ||
+    !profile?.avatar_url
+
   return (
     <div className="space-y-8">
+      {isProfileIncomplete && (
+        <Alert className="border-amber-300 bg-amber-50 text-gray-900 dark:border-primary/30 dark:bg-primary/10 dark:text-foreground [&_svg]:text-amber-700 dark:[&_svg]:text-current">
+          <UserCircle className="h-4 w-4 shrink-0" />
+          <AlertTitle className="!text-gray-900 dark:!text-foreground">Completar Cadastro</AlertTitle>
+          <AlertDescription className="!text-gray-700 dark:!text-muted-foreground">
+            <p className="mb-3">
+              Complete suas informações de perfil para uma melhor experiência na plataforma.
+            </p>
+            <Button asChild size="sm" className="gap-2 !bg-amber-600 !text-white hover:!bg-amber-700 dark:!bg-primary dark:!text-primary-foreground dark:hover:!bg-primary/90">
+              <Link href="/dashboard/profile/edit">
+                Inserir dados do perfil
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
       <div>
         <h1 className="text-4xl font-bold text-foreground mb-2">Bem-vindo, {profile?.full_name.match(/\S+/)[0]}!</h1>
         <div className="flex items-center gap-2">

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { CheckCircle, XCircle } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { formatPhoneForDisplay } from "@/lib/phone"
 
 interface MemberApprovalListProps {
   pendingMembers: Array<{
@@ -93,7 +94,7 @@ export default function MemberApprovalList({ pendingMembers }: MemberApprovalLis
               <p className="font-semibold text-foreground truncate">{member.full_name}</p>
               <p className="text-sm text-muted-foreground truncate">{member.email}</p>
               {member.phone && (
-                <p className="text-sm text-muted-foreground truncate">{member.phone}</p>
+                <p className="text-sm text-muted-foreground truncate">{formatPhoneForDisplay(member.phone)}</p>
               )}
               {member.bio && (
                 <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{member.bio}</p>

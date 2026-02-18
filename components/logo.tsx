@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 interface LogoProps {
   className?: string
   href?: string
-  size?: "sm" | "md" | "lg"
+  size?: "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl"
   showText?: boolean
   /** Optional class for the text wrapper - useful for hiding in collapsed sidebars */
   textClassName?: string
@@ -40,7 +40,10 @@ export function Logo({ className = "", href = "/dashboard", size = "md", showTex
   const textSizeClasses = {
     sm: "text-lg",
     md: "text-xl",
-    lg: "text-2xl"
+    lg: "text-2xl",
+    xl: "text-2xl",
+    xxl: "text-3xl",
+    xxxl: "text-3xl"
   }
 
   const logoElement = (

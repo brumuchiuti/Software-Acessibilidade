@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { Home, Calendar, Trophy, Users, Settings, LogOut, GraduationCap, Briefcase } from "lucide-react"
+import { Home, Calendar, Trophy, Users, Settings, LogOut, GraduationCap, Briefcase, ChevronDown } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -133,6 +133,7 @@ export function DashboardSidebar({ user, children }: DashboardSidebarProps) {
                 <span className="flex-1 truncate text-left min-w-0 group-data-[collapsible=icon]/sidebar-inner:hidden">
                   {user.full_name}
                 </span>
+                <ChevronDown className="h-4 w-4 shrink-0 opacity-70 group-data-[collapsible=icon]/sidebar-inner:hidden" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top" className="w-56">

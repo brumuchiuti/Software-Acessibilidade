@@ -9,12 +9,7 @@ export default async function MembersPage() {
 
   const { data: allMembers } = await supabase
     .from("profiles")
-    .select(`
-      *,
-      member_institute_areas (
-        area
-      )
-    `)
+    .select("*")
     .order("full_name", { ascending: true })
 
   const membersByRole = {
@@ -62,14 +57,14 @@ export default async function MembersPage() {
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 {roleLabels[role]} ({members.length})
               </h2>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {members.map((member) => (
                   <Card
                     key={member.id}
-                    className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors"
+                    className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20 hover:border-primary/40 transition-colors h-full flex flex-col min-h-[280px]"
                   >
-                    <CardContent className="pt-6">
-                      <div className="flex flex-col items-center text-center space-y-4">
+                    <CardContent className="pt-6 flex-1 flex flex-col">
+                      <div className="flex flex-col items-center text-center space-y-4 flex-1">
                         <Avatar className="h-20 w-20">
                           <AvatarImage src={member.avatar_url || ""} alt={member.full_name} className="object-cover" />
                           <AvatarFallback className="bg-[#FFD700] text-black text-xl">
@@ -82,24 +77,23 @@ export default async function MembersPage() {
                           </AvatarFallback>
                         </Avatar>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2 w-full flex flex-col items-center">
                           <h3 className="text-lg font-bold text-foreground">{member.full_name}</h3>
-                          <RoleBadge 
-                            boardRole={member.board_role}
-                            developmentLevel={member.development_level}
-                            instituteAreas={member.member_institute_areas}
-                          />
+                          <div className="flex justify-center">
+                            <RoleBadge 
+                              boardRole={member.board_role}
+                            />
+                          </div>
                         </div>
 
-                        {(member.bio || member.description) && (
-                          <div className="text-sm text-muted-foreground line-clamp-3">
-                            {member.bio && <p className="mb-1">{member.bio}</p>}
-                            {member.description && <p>{member.description}</p>}
+                        {member.bio && (
+                          <div className="text-sm text-muted-foreground line-clamp-3 text-center w-full">
+                            {member.bio}
                           </div>
                         )}
 
                         {(member.linkedin_url || member.instagram_url) && (
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center gap-3">
                             {member.linkedin_url && (
                               <a
                                 href={member.linkedin_url}
@@ -122,11 +116,6 @@ export default async function MembersPage() {
                             )}
                           </div>
                         )}
-
-                        <div className="w-full pt-4 border-t border-border flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Pontos</span>
-                          <span className="text-lg font-bold text-primary">{member.total_points}</span>
-                        </div>
                       </div>
                     </CardContent>
                   </Card>
