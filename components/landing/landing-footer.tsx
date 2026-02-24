@@ -6,6 +6,7 @@ const footerLinks = [
   { href: "#sobre", label: "Quem Somos" },
   { href: "#valores", label: "Valores" },
   { href: "#formacao", label: "Formação" },
+  { href: "/docs", label: "Documentação", external: false },
   { href: "https://iflbrasil.com.br", label: "IFL Brasil", external: true },
 ]
 
