@@ -127,3 +127,78 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Print styles – Exportar como PDF (apenas conteúdo central) */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #doc-content,
+  #doc-content * {
+    visibility: visible;
+  }
+  #doc-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 16px;
+    margin: 0;
+    background: white;
+    color: #1a1a1a;
+  }
+  /* Texto legível no PDF (dark on white) */
+  #doc-content h1, #doc-content h2, #doc-content h3,
+  #doc-content p, #doc-content li, #doc-content td, #doc-content th,
+  #doc-content span, #doc-content div, #doc-content a {
+    color: #1a1a1a !important;
+  }
+  #doc-content table,
+  #doc-content th,
+  #doc-content td {
+    border-color: #ddd !important;
+  }
+  /* Diagrama de Gantt: remover overflow para imprimir */
+  #doc-content [data-slot="card-content"],
+  #doc-content [class*="overflow"] {
+    overflow: visible !important;
+  }
+  #doc-content .overflow-x-auto,
+  #doc-content .overflow-x-auto *,
+  #doc-content .overflow-hidden,
+  #doc-content .overflow-hidden * {
+    overflow: visible !important;
+  }
+  /* Manter diagrama em uma página quando possível */
+  #doc-content [data-slot="card"] {
+    break-inside: avoid;
+  }
+  /* Barras do Gantt: cores sólidas para impressão (forçar impressão de backgrounds) */
+  #doc-content [data-gantt-phase="plan"],
+  #doc-content [data-gantt-phase="mvp"],
+  #doc-content [data-gantt-phase="ciclo"],
+  #doc-content [data-gantt-phase="acess"],
+  #doc-content [data-gantt-phase="deploy"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  #doc-content [data-gantt-phase="plan"] { background: #f59e0b !important; }
+  #doc-content [data-gantt-phase="mvp"] { background: #059669 !important; }
+  #doc-content [data-gantt-phase="ciclo"] { background: #2563eb !important; }
+  #doc-content [data-gantt-phase="acess"] { background: #7c3aed !important; }
+  #doc-content [data-gantt-phase="deploy"] { background: #f43f5e !important; }
+  #doc-content [data-gantt-container] {
+    overflow: visible !important;
+    min-width: 700px !important;
+  }
+  #doc-content [data-gantt-container] * {
+    overflow: visible !important;
+  }
+  /* Garantir que o container das barras tenha largura para as fases aparecerem */
+  #doc-content [data-gantt-bar-container] {
+    min-width: 400px !important;
+  }
+  #doc-content [data-gantt-bar-container] {
+    background: #e5e7eb !important;
+  }
+}

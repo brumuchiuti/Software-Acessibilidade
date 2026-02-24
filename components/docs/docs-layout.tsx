@@ -7,6 +7,7 @@ import { LandingFooter } from "@/components/landing/landing-footer"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ArrowLeft, FileText, Calendar, ClipboardList, FolderTree } from "lucide-react"
+import { ExportPdfButton } from "./export-pdf-button"
 
 const docNavItems = [
   { href: "/docs", label: "Índice", icon: FileText },
@@ -24,12 +25,15 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:gap-8 lg:px-8">
           {/* Sidebar - mobile: horizontal scroll, desktop: sticky sidebar */}
           <aside className="shrink-0 lg:w-56">
-            <div className="flex gap-2 overflow-x-auto pb-4 lg:hidden [&>a]:shrink-0">
-              {docNavItems.map((item) => (
-                <DocsNavLink key={item.href} href={item.href} icon={item.icon}>
-                  {item.label}
-                </DocsNavLink>
-              ))}
+            <div className="flex flex-col gap-3 lg:hidden">
+              <div className="flex gap-2 overflow-x-auto [&>a]:shrink-0">
+                {docNavItems.map((item) => (
+                  <DocsNavLink key={item.href} href={item.href} icon={item.icon}>
+                    {item.label}
+                  </DocsNavLink>
+                ))}
+              </div>
+              <ExportPdfButton className="shrink-0" />
             </div>
             <div className="hidden lg:block">
             <div className="sticky top-28 space-y-1 rounded-lg border border-white/10 bg-white/5 p-4">
@@ -41,7 +45,8 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
                   {item.label}
                 </DocsNavLink>
               ))}
-              <div className="mt-6 border-t border-white/10 pt-4">
+              <div className="mt-6 space-y-2 border-t border-white/10 pt-4">
+                <ExportPdfButton className="w-full justify-center" />
                 <Button asChild variant="ghost" size="sm" className="w-full justify-start text-white/70 hover:text-white">
                   <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
@@ -52,7 +57,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
             </div>
             </div>
           </aside>
-          <main className="min-w-0 flex-1">{children}</main>
+          <main id="doc-content" className="min-w-0 flex-1">{children}</main>
         </div>
       </div>
       <LandingFooter />

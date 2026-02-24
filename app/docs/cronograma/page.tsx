@@ -75,12 +75,13 @@ function GanttBar({
   const widthPercent = (duration / TOTAL_WEEKS) * 100
 
   return (
-    <div className="group relative flex items-center gap-4 py-1.5">
+    <div className="group relative flex items-center gap-4 py-1.5" data-gantt-row>
       <div className="w-48 shrink-0 text-sm text-white/90">{label}</div>
-      <div className="relative h-8 flex-1 overflow-hidden rounded bg-white/5">
+      <div className="relative h-8 flex-1 overflow-hidden rounded bg-white/5 print:overflow-visible print:min-w-[400px]" data-gantt-bar-container>
         <div
           className={`absolute top-1 bottom-1 rounded ${phaseColors[phase] || "bg-gray-500"} transition-all group-hover:opacity-90`}
           style={{ left: `${leftPercent}%`, width: `${widthPercent}%` }}
+          data-gantt-phase={phase}
         />
       </div>
       <div className="hidden w-20 shrink-0 text-xs text-white/60 sm:block">
@@ -160,7 +161,7 @@ export default function CronogramaPage() {
             Timeline visual das atividades por fase
           </CardDescription>
         </CardHeader>
-        <CardContent className="overflow-x-auto">
+        <CardContent className="overflow-x-auto print:overflow-visible" data-gantt-container>
           <div className="mb-4 flex gap-0">
             <div className="w-48 shrink-0" />
             <div className="relative flex flex-1">
