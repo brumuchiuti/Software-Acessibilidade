@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileText, Calendar, ClipboardList, FolderTree, ArrowRight } from "lucide-react"
+import { FileText, Calendar, ClipboardList, FolderTree, Layers, ArrowRight } from "lucide-react"
 
 const docs = [
   {
@@ -26,6 +26,12 @@ const docs = [
     title: "EAP / WBS",
     description: "Estrutura Analítica do Projeto com breakdown completo das tarefas.",
     icon: FolderTree,
+  },
+  {
+    href: "/docs/entrega2",
+    title: "Entrega 2 – Requisitos, Modelagem e Arquitetura",
+    description: "Requisitos funcionais e não funcionais, DCU, DCL, diagramas e justificativa da arquitetura.",
+    icon: Layers,
   },
 ]
 

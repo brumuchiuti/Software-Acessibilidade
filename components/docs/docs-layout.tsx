@@ -6,7 +6,7 @@ import { LandingHeader } from "@/components/landing/landing-header"
 import { LandingFooter } from "@/components/landing/landing-footer"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, FileText, Calendar, ClipboardList, FolderTree } from "lucide-react"
+import { ArrowLeft, FileText, Calendar, ClipboardList, FolderTree, Layers } from "lucide-react"
 import { ExportPdfButton } from "./export-pdf-button"
 
 const docNavItems = [
@@ -15,6 +15,7 @@ const docNavItems = [
   { href: "/docs/cronograma", label: "Cronograma (Gantt)", icon: Calendar },
   { href: "/docs/escopo", label: "Declaração de Escopo", icon: ClipboardList },
   { href: "/docs/eap", label: "EAP / WBS", icon: FolderTree },
+  { href: "/docs/entrega2", label: "Entrega 2", icon: Layers },
 ]
 
 export function DocsLayout({ children }: { children: React.ReactNode }) {

@@ -14,6 +14,7 @@ Documentos de definição de escopo e planejamento do projeto. **Foco em acessib
 | [Cronograma – Gantt](./Cronograma-Gantt.md) | Cronograma inicial com marcos, diagrama de Gantt e detalhamento das atividades |
 | [Declaração de Escopo](./Declaracao-de-Escopo.md) | Escopo do produto (incluído/excluído), critérios de aceitação e entregáveis |
 | [EAP / WBS](./EAP-WBS.md) | Estrutura Analítica do Projeto com breakdown completo |
+| [**Entrega 2 – Requisitos, Modelagem e Arquitetura**](./Entrega2-Requisitos-Modelagem-Arquitetura.md) | Requisitos funcionais e não funcionais, DCU, DCL, diagramas de arquitetura e justificativa |
 
 ---
 
