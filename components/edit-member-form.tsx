@@ -1,196 +1,137 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { createClient } from "@/lib/supabase/client"
-import { formatPhoneForDisplay, formatPhoneInput, normalizePhoneForStorage } from "@/lib/phone"
+import { formatPhoneForDisplay, formatPhoneInput } from "@/lib/phone"
+import { updateMember } from "@/app/actions/update-member"
 
-interface Member {
+const ROLE_OPTIONS = [
+  { value: "none", label: "Nenhum" },
+  { value: "presidente", label: "Presidente" },
+  { value: "vice_presidente", label: "Vice-Presidente" },
+  { value: "diretor", label: "Diretor" },
+]
+
+const BOARD_ROLE_OPTIONS = [
+  { value: "none", label: "Não é membro da diretoria" },
+  { value: "presidente", label: "Presidente" },
+  { value: "vice_presidente", label: "Vice-Presidente" },
+  { value: "diretor_eventos", label: "Diretor de Eventos" },
+  { value: "diretor_comunicacao", label: "Diretor de Comunicação" },
+  { value: "diretor_formacao", label: "Diretor de Formação" },
+  { value: "diretor_institucional", label: "Diretor Institucional" },
+  { value: "diretor_financeiro", label: "Diretor Financeiro" },
+  { value: "diretor_forum", label: "Diretor de Fórum" },
+  { value: "conselheiro", label: "Conselheiro" },
+]
+
+const DEVELOPMENT_LEVEL_OPTIONS = [
+  { value: "qualify", label: "Qualify" },
+  { value: "associado_i", label: "Associado I" },
+  { value: "associado_ii", label: "Associado II" },
+  { value: "associado_senior", label: "Associado Sênior" },
+]
+
+const INSTITUTE_AREA_OPTIONS = [
+  { value: "diretoria_financeira", label: "Diretoria Financeira" },
+  { value: "diretoria_comunicacao", label: "Diretoria de Comunicação" },
+  { value: "diretoria_forum", label: "Diretoria de Fórum" },
+  { value: "diretoria_formacao", label: "Diretoria de Formação" },
+  { value: "diretoria_institucional", label: "Diretoria Institucional" },
+  { value: "diretoria_eventos", label: "Diretoria de Eventos" },
+]
+
+type Member = {
   id: string
   full_name: string
   email: string
-  role: string
+  role: string | null
   board_role: string | null
   development_level: string
-  director_title: string | null
   bio: string | null
   phone: string | null
   linkedin_url: string | null
   instagram_url: string | null
   description: string | null
-  member_institute_areas?: Array<{
-    area: string
-  }>
+  member_institute_areas?: Array<{ area: string }>
 }
 
-interface EditMemberFormProps {
+type Props = {
   member: Member
   currentUserId: string
 }
 
-export default function EditMemberForm({ member, currentUserId }: EditMemberFormProps) {
+export default function EditMemberForm({ member, currentUserId }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    full_name: member.full_name,
-    role: member.role || "none",
-    board_role: member.board_role || "none",
-    development_level: member.development_level || "qualify",
-    institute_areas: member.member_institute_areas?.map(area => area.area) || [],
-    bio: member.bio || "",
-    phone: formatPhoneForDisplay(member.phone) || "",
-    linkedin_url: member.linkedin_url || "",
-    instagram_url: member.instagram_url || "",
-    description: member.description || "",
+  const [error, setError] = useState<string | null>(null)
+
+  const isOwnProfile = member.id === currentUserId
+
+  const [form, setForm] = useState({
+    full_name: member.full_name ?? "",
+    role: member.role ?? "none",
+    board_role: member.board_role ?? "none",
+    development_level: member.development_level ?? "qualify",
+    institute_areas: member.member_institute_areas?.map((a) => a.area) ?? [],
+    bio: member.bio ?? "",
+    phone: formatPhoneForDisplay(member.phone) ?? "",
+    linkedin_url: member.linkedin_url ?? "",
+    instagram_url: member.instagram_url ?? "",
+    description: member.description ?? "",
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError(null)
 
-    try {
-      const supabase = createClient()
+    const result = await updateMember(member.id, form, isOwnProfile)
 
-      // Update profile information
-      const updateData: any = {
-        role: formData.role === "none" ? null : formData.role,
-        board_role: formData.board_role === "none" ? null : formData.board_role,
-        development_level: formData.development_level,
-      }
-
-      // Only update personal information if editing own profile
-      if (isCurrentUser) {
-        updateData.full_name = formData.full_name
-        updateData.bio = formData.bio || null
-        updateData.phone = normalizePhoneForStorage(formData.phone) || null
-        updateData.linkedin_url = formData.linkedin_url || null
-        updateData.instagram_url = formData.instagram_url || null
-        updateData.description = formData.description || null
-      }
-
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update(updateData)
-        .eq("id", member.id)
-
-      if (profileError) throw profileError
-
-      // Update institute areas
-      // First, delete existing areas
-      const { error: deleteError } = await supabase
-        .from("member_institute_areas")
-        .delete()
-        .eq("member_id", member.id)
-
-      if (deleteError) throw deleteError
-
-      // Then insert new areas
-      if (formData.institute_areas.length > 0) {
-        const areasToInsert = formData.institute_areas.map(area => ({
-          member_id: member.id,
-          area: area
-        }))
-
-        const { error: insertError } = await supabase
-          .from("member_institute_areas")
-          .insert(areasToInsert)
-
-        if (insertError) throw insertError
-      }
-
-      router.push("/dashboard/admin/members")
-      router.refresh()
-    } catch (error) {
-      console.error("Error updating member:", error)
-      alert("Erro ao atualizar membro. Tente novamente.")
-    } finally {
+    if (result?.error) {
+      setError(result.error)
       setLoading(false)
+      return
     }
+
+    router.push("/dashboard/admin/members")
+    router.refresh()
+    setLoading(false)
   }
-
-  const roleOptions = [
-    { value: "none", label: "Nenhum" },
-    { value: "presidente", label: "Presidente" },
-    { value: "vice_presidente", label: "Vice-Presidente" },
-    { value: "diretor", label: "Diretor" },
-  ]
-
-  const boardRoleOptions = [
-    { value: "none", label: "Não é membro da diretoria" },
-    { value: "presidente", label: "Presidente" },
-    { value: "vice_presidente", label: "Vice-Presidente" },
-    { value: "diretor_eventos", label: "Diretor de Eventos" },
-    { value: "diretor_comunicacao", label: "Diretor de Comunicação" },
-    { value: "diretor_formacao", label: "Diretor de Formação" },
-    { value: "diretor_institucional", label: "Diretor Institucional" },
-    { value: "diretor_financeiro", label: "Diretor Financeiro" },
-    { value: "diretor_forum", label: "Diretor de Fórum" },
-    { value: "conselheiro", label: "Conselheiro" },
-  ]
-
-  const developmentLevelOptions = [
-    { value: "qualify", label: "Qualify" },
-    { value: "associado_i", label: "Associado I" },
-    { value: "associado_ii", label: "Associado II" },
-    { value: "associado_senior", label: "Associado Sênior" },
-  ]
-
-  const instituteAreaOptions = [
-    { value: "diretoria_financeira", label: "Diretoria Financeira" },
-    { value: "diretoria_comunicacao", label: "Diretoria de Comunicação" },
-    { value: "diretoria_forum", label: "Diretoria de Fórum" },
-    { value: "diretoria_formacao", label: "Diretoria de Formação" },
-    { value: "diretoria_institucional", label: "Diretoria Institucional" },
-    { value: "diretoria_eventos", label: "Diretoria de Eventos" },
-  ]
-
-  const handleAreaChange = (area: string, checked: boolean) => {
-    if (checked) {
-      setFormData(prev => ({
-        ...prev,
-        institute_areas: [...prev.institute_areas, area]
-      }))
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        institute_areas: prev.institute_areas.filter(a => a !== area)
-      }))
-    }
-  }
-
-  const isCurrentUser = member.id === currentUserId
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-400 text-sm">
+          {error}
+        </div>
+      )}
+
       <div className="space-y-2">
-        <Label htmlFor="full_name" className="text-foreground">
-          Nome Completo *
-        </Label>
+        <Label htmlFor="full_name">Nome Completo *</Label>
         <Input
           id="full_name"
-          value={formData.full_name}
-          onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-          className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+          name="full_name"
+          value={form.full_name}
+          onChange={(e) => setForm((p) => ({ ...p, full_name: e.target.value }))}
+          className="bg-input border-border text-foreground"
           required
-          disabled={!isCurrentUser}
+          disabled={!isOwnProfile}
         />
-        {!isCurrentUser && (
-          <p className="text-xs text-muted-foreground">Apenas o próprio membro pode alterar informações pessoais</p>
+        {!isOwnProfile && (
+          <p className="text-xs text-muted-foreground">
+            Apenas o próprio membro pode alterar informações pessoais
+          </p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-foreground">
-          Email
-        </Label>
+        <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           value={member.email}
@@ -200,80 +141,81 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
         <p className="text-xs text-muted-foreground">Email não pode ser alterado</p>
       </div>
 
-      {isCurrentUser && (
+      {isOwnProfile && (
         <div className="space-y-2">
-          <Label htmlFor="phone" className="text-foreground">
-            Telefone
-          </Label>
+          <Label htmlFor="phone">Telefone</Label>
           <Input
             id="phone"
-            value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: formatPhoneInput(e.target.value) })}
+            name="phone"
+            value={form.phone}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, phone: formatPhoneInput(e.target.value) }))
+            }
             placeholder="+55 (11) 98765-4321"
-            className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+            className="bg-input border-border text-foreground"
           />
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="role" className="text-foreground">
-          Função
-        </Label>
+        <Label>Função</Label>
         <Select
-          value={formData.role}
-          onValueChange={(value) => setFormData({ ...formData, role: value })}
+          value={form.role}
+          onValueChange={(v) => setForm((p) => ({ ...p, role: v }))}
         >
           <SelectTrigger className="bg-input border-border text-foreground">
             <SelectValue placeholder="Selecione a função" />
           </SelectTrigger>
           <SelectContent>
-            {roleOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
+            {ROLE_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        <p className="text-xs text-muted-foreground">Função administrativa do membro</p>
+        <p className="text-xs text-muted-foreground">
+          Função administrativa do membro
+        </p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="board_role" className="text-foreground">
-          Cargo na Diretoria
-        </Label>
+        <Label>Cargo na Diretoria</Label>
         <Select
-          value={formData.board_role}
-          onValueChange={(value) => setFormData({ ...formData, board_role: value })}
+          value={form.board_role}
+          onValueChange={(v) => setForm((p) => ({ ...p, board_role: v }))}
         >
           <SelectTrigger className="bg-input border-border text-foreground">
             <SelectValue placeholder="Selecione o cargo na diretoria" />
           </SelectTrigger>
           <SelectContent>
-            {boardRoleOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
+            {BOARD_ROLE_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        <p className="text-xs text-muted-foreground">Apenas membros da diretoria têm acesso ao painel administrativo</p>
+        <p className="text-xs text-muted-foreground">
+          Apenas membros da diretoria têm acesso ao painel administrativo
+        </p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="development_level" className="text-foreground">
-          Nível de Desenvolvimento *
-        </Label>
+        <Label>Nível de Desenvolvimento *</Label>
         <Select
-          value={formData.development_level}
-          onValueChange={(value) => setFormData({ ...formData, development_level: value })}
+          value={form.development_level}
+          onValueChange={(v) =>
+            setForm((p) => ({ ...p, development_level: v }))
+          }
         >
           <SelectTrigger className="bg-input border-border text-foreground">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {developmentLevelOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
+            {DEVELOPMENT_LEVEL_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
               </SelectItem>
             ))}
           </SelectContent>
@@ -281,42 +223,51 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
       </div>
 
       <div className="space-y-2">
-        <Label className="text-foreground">
-          Áreas do Instituto
-        </Label>
+        <Label>Áreas do Instituto</Label>
         <div className="grid grid-cols-2 gap-3">
-          {instituteAreaOptions.map((option) => (
-            <div key={option.value} className="flex items-center space-x-2">
+          {INSTITUTE_AREA_OPTIONS.map((opt) => (
+            <div key={opt.value} className="flex items-center gap-2">
               <Checkbox
-                id={option.value}
-                checked={formData.institute_areas.includes(option.value)}
-                onCheckedChange={(checked) => handleAreaChange(option.value, checked as boolean)}
+                id={opt.value}
+                checked={form.institute_areas.includes(opt.value)}
+                onCheckedChange={(checked) => {
+                  setForm((p) => ({
+                    ...p,
+                    institute_areas: checked
+                      ? [...p.institute_areas, opt.value]
+                      : p.institute_areas.filter((a) => a !== opt.value),
+                  }))
+                }}
                 className="border-border"
               />
               <Label
-                htmlFor={option.value}
+                htmlFor={opt.value}
                 className="text-sm text-muted-foreground cursor-pointer"
               >
-                {option.label}
+                {opt.label}
               </Label>
             </div>
           ))}
         </div>
-        <p className="text-xs text-muted-foreground">Selecione uma ou mais áreas que o membro participa</p>
+        <p className="text-xs text-muted-foreground">
+          Selecione uma ou mais áreas que o membro participa
+        </p>
       </div>
 
-      {!isCurrentUser && (
-        <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-          <p className="text-blue-400 text-sm">
-            ℹ️ Você está editando o perfil de outro membro. Apenas informações organizacionais podem ser alteradas.
+      {!isOwnProfile && (
+        <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4">
+          <p className="text-sm text-blue-400">
+            ℹ️ Você está editando o perfil de outro membro. Apenas informações
+            organizacionais podem ser alteradas.
           </p>
         </div>
       )}
 
-      {isCurrentUser && (
-        <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-          <p className="text-yellow-400 text-sm">
-            ⚠️ Você está editando seu próprio perfil. Tenha cuidado ao alterar seu cargo.
+      {isOwnProfile && (
+        <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/10 p-4">
+          <p className="text-sm text-yellow-400">
+            ⚠️ Você está editando seu próprio perfil. Tenha cuidado ao alterar
+            seu cargo.
           </p>
         </div>
       )}
@@ -331,7 +282,11 @@ export default function EditMemberForm({ member, currentUserId }: EditMemberForm
         >
           Cancelar
         </Button>
-        <Button type="submit" disabled={loading} className="flex-1 bg-[#FFD700] text-black hover:bg-[#FFD700]/90">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="flex-1 bg-[#FFD700] text-black hover:bg-[#FFD700]/90"
+        >
           {loading ? "Atualizando..." : "Atualizar Membro"}
         </Button>
       </div>

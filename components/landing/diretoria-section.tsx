@@ -1,13 +1,13 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Crown, Building2, CalendarDays, GraduationCap, Wallet, Megaphone } from "lucide-react"
 
 const diretoria = [
-  { name: "Ellen Brito", role: "Presidente", icon: Crown },
-  { name: "Moisés Marin", role: "Vice-Presidente e Diretor Institucional", icon: Building2 },
-  { name: "Gabriel Henrique", role: "Diretor de Eventos", icon: CalendarDays },
-  { name: "Mateus Couto", role: "Diretor de Formação", icon: GraduationCap },
-  { name: "Pedro Quelhas", role: "Diretor Financeiro", icon: Wallet },
-  { name: "Ivan Vecchia", role: "Diretor de Comunicação", icon: Megaphone },
+  { name: "Ellen Brito", role: "Presidente", icon: Crown, image: "/gestao/ellen-brito.jpeg" },
+  { name: "Moisés Marin", role: "Vice-Presidente e Diretor Institucional", icon: Building2, image: "/gestao/moises-marin.jpeg" },
+  { name: "Gabriel Henrique", role: "Diretor de Eventos", icon: CalendarDays, image: "/gestao/gabriel-henrique.png" },
+  { name: "Mateus Couto", role: "Diretor de Formação", icon: GraduationCap, image: "/gestao/mateus-couto.jpeg" },
+  { name: "Pedro Quelhas", role: "Diretor Financeiro", icon: Wallet, image: "/gestao/pedro-quelhas.jpeg" },
+  { name: "Ivan Vecchia", role: "Diretor de Comunicação", icon: Megaphone, image: "/gestao/ivan-vecchia.jpeg" },
 ]
 
 export function DiretoriaSection() {
@@ -27,6 +27,7 @@ export function DiretoriaSection() {
               className="flex flex-col items-center text-center"
             >
               <Avatar className="mb-4 h-32 w-32 border-4 border-[#FFD700]/30">
+                <AvatarImage src={dir.image} alt={dir.name} className="object-cover object-center" />
                 <AvatarFallback className="bg-[#001f3f] text-3xl text-[#FFD700]">
                   {dir.name.split(" ").map(n => n[0]).join("")}
                 </AvatarFallback>

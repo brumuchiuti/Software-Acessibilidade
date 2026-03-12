@@ -15,7 +15,7 @@ const docNavItems = [
   { href: "/docs/cronograma", label: "Cronograma (Gantt)", icon: Calendar },
   { href: "/docs/escopo", label: "Declaração de Escopo", icon: ClipboardList },
   { href: "/docs/eap", label: "EAP / WBS", icon: FolderTree },
-  { href: "/docs/entrega2", label: "Entrega 2", icon: Layers },
+  { href: "/docs/entrega2", label: "Requisitos, Modelagem e Arquitetura", icon: Layers },
 ]
 
 export function DocsLayout({ children }: { children: React.ReactNode }) {

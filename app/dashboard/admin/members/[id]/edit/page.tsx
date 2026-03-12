@@ -3,11 +3,11 @@ import { redirect, notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import EditMemberForm from "@/components/edit-member-form"
 
-interface EditMemberPageProps {
+type Props = {
   params: Promise<{ id: string }>
 }
 
-export default async function EditMemberPage({ params }: EditMemberPageProps) {
+export default async function EditMemberPage({ params }: Props) {
   const { id } = await params
   const supabase = await createClient()
 
@@ -17,17 +17,28 @@ export default async function EditMemberPage({ params }: EditMemberPageProps) {
 
   if (!user) redirect("/auth/login")
 
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+  const { data: adminProfile } = await supabase
+    .from("profiles")
+    .select("board_role")
+    .eq("id", user.id)
+    .single()
 
-  const isAdmin = profile && profile.board_role !== null
+  if (!adminProfile?.board_role) redirect("/dashboard")
 
-  if (!isAdmin) redirect("/dashboard")
-
-  // Fetch the member data
   const { data: member, error } = await supabase
     .from("profiles")
     .select(`
-      *,
+      id,
+      full_name,
+      email,
+      role,
+      board_role,
+      development_level,
+      bio,
+      phone,
+      linkedin_url,
+      instagram_url,
+      description,
       member_institute_areas (
         area
       )
@@ -35,20 +46,24 @@ export default async function EditMemberPage({ params }: EditMemberPageProps) {
     .eq("id", id)
     .single()
 
-  if (error || !member) {
-    notFound()
-  }
+  if (error || !member) notFound()
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-foreground mb-2">Editar Membro</h1>
-        <p className="text-muted-foreground">Atualize as informações do membro</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">
+          Editar Membro
+        </h1>
+        <p className="text-muted-foreground">
+          Atualize as informações do membro
+        </p>
       </div>
 
       <Card className="bg-card border-primary/20 dark:bg-white/5 dark:border-[#FFD700]/20">
         <CardHeader>
-          <CardTitle className="text-foreground">Informações do Membro</CardTitle>
+          <CardTitle className="text-foreground">
+            Informações do Membro
+          </CardTitle>
           <CardDescription className="text-muted-foreground">
             Todos os campos são obrigatórios exceto quando indicado
           </CardDescription>

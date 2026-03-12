@@ -1,4 +1,4 @@
-# Entrega 2 – Requisitos, Modelagem e Arquitetura
+# Requisitos, Modelagem e Arquitetura
 ## Plataforma Educacional Acessível (White-Label) – IFL Jovem SP
 
 | Versão | Data | Grupo ABE |
@@ -129,4 +129,4 @@
 
 ---
 
-*Documento Entrega 2 – Plataforma Educacional Acessível.*
+*Documento Requisitos, Modelagem e Arquitetura – Plataforma Educacional Acessível.*

@@ -3,7 +3,7 @@ import path from "path"
 import { MarkdownContent } from "@/components/docs/markdown-content"
 
 export default async function Entrega2Page() {
-  const filePath = path.join(process.cwd(), "docs", "Entrega2-Requisitos-Modelagem-Arquitetura.md")
+  const filePath = path.join(process.cwd(), "docs", "Requisitos-Modelagem-Arquitetura.md")
   const content = await readFile(filePath, "utf-8")
 
   return (

@@ -29,7 +29,7 @@ const docs = [
   },
   {
     href: "/docs/entrega2",
-    title: "Entrega 2 – Requisitos, Modelagem e Arquitetura",
+    title: "Requisitos, Modelagem e Arquitetura",
     description: "Requisitos funcionais e não funcionais, DCU, DCL, diagramas e justificativa da arquitetura.",
     icon: Layers,
   },
